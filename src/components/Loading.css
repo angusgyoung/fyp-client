@@ -1,0 +1,12 @@
+.loading {
+    background-color: black;
+    height: 10em;
+    align-items: center;
+    justify-content: center
+}
+
+svg {
+    margin: 0;
+    width: 100%;
+    height: 100%;
+}

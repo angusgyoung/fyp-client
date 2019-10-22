@@ -1,0 +1,24 @@
+#navbar {
+    border-style: solid;
+    border-color: #635e63;
+    border-width: 1px;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+}
+#navbarLoginButton {
+    color: white;
+    border-style: solid;
+    border-width: 1px;
+    border-radius: 15px;
+    padding: 10px;
+
+}
+
+#brand {
+    color: white;
+}
+
+#navbarProfilePicture {
+    width: 2rem;
+}
