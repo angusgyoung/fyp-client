@@ -5,32 +5,24 @@ import Card from "react-bootstrap/Card";
 import Collapse from "react-bootstrap/Collapse";
 import Button from "react-bootstrap/Button";
 
-const PostContainer = () => {
+const PostContainer = (props) => {
 
     const [open, setOpen] = useState(false);
+
+    let {username, content, timestamp} = props.post;
 
     return (
         <Card style={styles.postContainer}>
             <Card.Title style={styles.postContainerUser}>
                 <div className="float-left">
-                    Some Username
+                    {username}
                 </div>
                 <div className="text-muted float-right">
-                    Some timestamp
+                    {timestamp}
                 </div>
             </Card.Title>
-            <Card.Text style={styles.postContainerText}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ut
-                orci at neque mattis
-                suscipit in sit amet
-                leo. Vestibulum blandit, diam eget tempor iaculis, urna mi lacinia mauris, vitae tincidunt nisi ex
-                quis
-                libero. Nulla feugiat sagittis pellentesque. Nulla non nisl nibh. Duis a nibh vel neque tempor
-                finibus
-                in
-                eget enim. Nullam non odio congue, blandit quam eget, fermentum ligula. Nam hendrerit efficitur
-                justo,
-                at
-                malesuada enim pharetra non. Donec condimentum elit id mattis blandit.
+            <Card.Text style={styles.postContainerText}>
+                {content}
             </Card.Text>
             <Card.Subtitle style={styles.postContainerVerificationBar}>
                 <div>
@@ -64,7 +56,8 @@ const styles = {
         backgroundColor: "black",
         borderStyle: "solid",
         borderColor: theme.BORDER_COLOR,
-        marginBottom: theme.GLOBAL_MARGIN
+        marginBottom: theme.GLOBAL_MARGIN,
+        width: "100%"
     },
 
     postContainerUser: {
@@ -85,8 +78,7 @@ const styles = {
         padding: theme.GLOBAL_PADDING
     },
 
-    expandPostHashButton: {
-    },
+    expandPostHashButton: {},
 
     verificationExpandView: {
         padding: theme.GLOBAL_PADDING,

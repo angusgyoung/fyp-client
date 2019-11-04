@@ -7,7 +7,6 @@ import ProfileCard from "../components/ProfileCard";
 import Container from "react-bootstrap/Container";
 import PostContainer from "../components/PostContainer";
 
-
 const PostView = (props) => {
 
     const {title, posts} = props;
@@ -31,30 +30,15 @@ const PostView = (props) => {
                     </div>
                 </Col>
                 <Col className="col-md-8">
-                    <Row>
-                        <PostContainer/>
-                    </Row>
-                    <Row>
-                        <PostContainer/>
-                    </Row>
-                    <Row>
-                        <PostContainer/>
-                    </Row>
-                    <Row>
-                        <PostContainer/>
-                    </Row>
-                    <Row>
-                        <PostContainer/>
-                    </Row>
-                    <Row>
-                        <PostContainer/>
-                    </Row>
-                    <Row>
-                        <PostContainer/>
-                    </Row>
-                    <Row>
-                        <PostContainer/>
-                    </Row>
+                    {
+                        posts.map(post => {
+                            return (
+                                <Row>
+                                    <PostContainer post={post}/>
+                                </Row>
+                            );
+                        })
+                    }
                 </Col>
             </Row>
         </Container>

@@ -1,20 +1,38 @@
 import React from "react";
-import Loading from "../components/Loading";
-import {useAuth0} from "../react-auth0-spa";
 import PostView from "../views/PostView";
 
-const Feed = () => {
-    const {loading, user} = useAuth0();
+import {getPosts} from "../services/api"
+import {createWsClient} from "../services/socket";
 
-    if (loading || !user) {
-        return <Loading/>;
+class Feed extends React.Component {
+
+    constructor(props) {
+        super(props)
+        this.state = {
+            posts: [],
+            user: props.user
+        };
     }
 
-    return (
-        <PostView title="Feed"/>
-    );
+    async componentDidMount() {
+        let postPage = await getPosts();
 
-};
+        this.newPostsWs = await createWsClient('ws://localhost:8080/api/v1/isys/websocket',
+            '/topic/posts', (frame) => {
+                console.log('Received frame: ', frame);
+                this.state.posts.unshift(JSON.parse(frame.body));
+                this.setState({posts: this.state.posts})
+        });
+
+        this.setState({posts: postPage.content})
+    }
+
+    render() {
+        return (
+            <PostView title="Feed" posts={this.state.posts}/>
+        );
+    }
+}
 
 
 export default Feed;

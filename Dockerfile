@@ -6,6 +6,8 @@ WORKDIR /usr/src/app
 COPY . .
 
 ENV PATH /usr/src/app/node_modules/.bin:$PATH
+ENV PUBLIC_URL /app/isaidyousaid/client
+ENV NODE_ENV production
 
 ADD package.json /usr/src/app/package.json
 RUN npm install

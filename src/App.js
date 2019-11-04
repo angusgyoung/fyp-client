@@ -1,5 +1,5 @@
 import React from "react";
-import { Router, Route, Switch } from "react-router-dom";
+import {Route, Router, Switch} from "react-router-dom";
 
 import PrivateRoute from "./components/PrivateRoute";
 import Loading from "./components/Loading";
@@ -7,9 +7,8 @@ import Navigation from "./components/Navigation";
 import Footer from "./components/Footer";
 import Home from "./pages/Home";
 import Profile from "./pages/Profile";
-import { useAuth0 } from "./react-auth0-spa";
+import {useAuth0} from "./react-auth0-spa";
 import history from "./services/history";
-
 // styles
 import "./App.css";
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -32,7 +31,7 @@ const App = () => {
                     <Switch>
                         <Route path="/" exact component={Home} />
                         <Route path="/home" exact component={Home} />
-                        <PrivateRoute path="/profile" component={Profile} />
+                        <PrivateRoute path="/profile" component={Profile}/>
                         <PrivateRoute path="/feed" component={Feed} />
                     </Switch>
                 </Container>
