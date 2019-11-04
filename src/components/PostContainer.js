@@ -4,6 +4,7 @@ import theme from "../util/theme";
 import Card from "react-bootstrap/Card";
 import Collapse from "react-bootstrap/Collapse";
 import Button from "react-bootstrap/Button";
+import Moment from 'react-moment';
 
 const PostContainer = (props) => {
 
@@ -18,7 +19,7 @@ const PostContainer = (props) => {
                     {username}
                 </div>
                 <div className="text-muted float-right">
-                    {timestamp}
+                    <Moment unix format="h:mm a · MMM D YYYY">{timestamp}</Moment>
                 </div>
             </Card.Title>
             <Card.Text style={styles.postContainerText}>

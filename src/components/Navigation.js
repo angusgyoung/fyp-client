@@ -1,6 +1,6 @@
 import React, {Fragment} from "react";
 import {useAuth0} from "../react-auth0-spa";
-
+import {Link} from "react-router-dom";
 import Navbar from "react-bootstrap/Navbar";
 import NavDropdown from "react-bootstrap/NavDropdown";
 import Button from "react-bootstrap/Button";
@@ -17,7 +17,7 @@ const Navigation = () => {
 
     return (
         <Navbar id="navbar">
-            <Navbar.Brand id="brand" href="/home">I Said You Said</Navbar.Brand>
+            <Link id="brand" className="navbar-brand" to="/home">I Said You Said</Link>
             <Navbar.Toggle/>
             <Navbar.Collapse className="justify-content-end">
                 {!isAuthenticated && (
@@ -39,8 +39,8 @@ const Navigation = () => {
                             className="rounded-circle"
                         />
                         <NavDropdown title={user.name} id="basic-nav-dropdown">
-                            <NavDropdown.Item href="/profile">Profile</NavDropdown.Item>
-                            <NavDropdown.Item href="/feed">Feed</NavDropdown.Item>
+                            <Link className="dropdown-item" to="/profile">Profile</Link>
+                            <Link className="dropdown-item" to="/feed">Feed</Link>
                             <NavDropdown.Divider/>
                             <NavDropdown.Item>
                                 <Button
