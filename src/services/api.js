@@ -1,5 +1,7 @@
+const API_HOST = "https://isys.dotwave.io/api/v1/isys";
+
 export const getPosts = async () => {
-    const response = await fetch('http://localhost:8080/api/v1/isys/posts?page=0&size=10', {
+    const response = await fetch(`${API_HOST}/posts?page=0&size=10`, {
         method: 'GET',
         headers: {
             'Accept': 'application/json'
@@ -9,7 +11,7 @@ export const getPosts = async () => {
 };
 
 export const getPostsForUser = async (username) => {
-    const response = await fetch(`http://localhost:8080/api/v1/isys/posts/${username}?page=0&size=10`, {
+    const response = await fetch(`${API_HOST}/posts/${username}?page=0&size=10`, {
         method: 'GET',
         headers: {
             'Accept': 'application/json'
