@@ -3,8 +3,9 @@ import React, {useState} from "react";
 import theme from "../util/theme";
 import Card from "react-bootstrap/Card";
 import Collapse from "react-bootstrap/Collapse";
-import Button from "react-bootstrap/Button";
 import Moment from 'react-moment';
+
+import GenericButton from '../components/GenericButton';
 
 const PostContainer = (props) => {
 
@@ -31,15 +32,14 @@ const PostContainer = (props) => {
                         Integrity
                     </div>
                     <div className="float-right">
-                        <Button
+                        <GenericButton
                             onClick={() => setOpen(!open)}
                             className="genericButton"
                             aria-controls="example-collapse-text"
                             aria-expanded={open}
-                            style={styles.expandPostHashButton}
                         >
                             See Post Hash
-                        </Button>
+                        </GenericButton>
                     </div>
                 </div>
             </Card.Subtitle>
@@ -78,9 +78,7 @@ const styles = {
         borderTopColor: theme.BORDER_COLOR,
         padding: theme.GLOBAL_PADDING
     },
-
-    expandPostHashButton: {},
-
+        
     verificationExpandView: {
         padding: theme.GLOBAL_PADDING,
         backgroundColor: theme.GREY,

@@ -1,6 +1,6 @@
 import {Client} from "@stomp/stompjs"
 
-const WEBSOCKET_URI = 'ws://isys.dotwave.io/api/v1/isys/websocket';
+const WEBSOCKET_URI = 'ws://localhost:8008/api/v1/isys/websocket';
 
 export const createWsClient = (wsUrl, subscription, onMessageCallback) => {
     let client;
