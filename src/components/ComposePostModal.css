@@ -1,0 +1,13 @@
+.composePostModal .modal-content {
+    background-color: black;
+    border-color: white;
+    color: white;
+}
+
+.composePostModal {
+    opacity: 100%;
+}
+
+#composePostTextArea {
+    resize: none;
+}

@@ -3,9 +3,9 @@ import {useAuth0} from "../react-auth0-spa";
 import {Link} from "react-router-dom";
 import Navbar from "react-bootstrap/Navbar";
 import NavDropdown from "react-bootstrap/NavDropdown";
-import Button from "react-bootstrap/Button";
 
 import "./Navigation.css"
+import GenericButton from "./GenericButton";
 
 const Navigation = () => {
     const {user, isAuthenticated, loginWithRedirect, logout} = useAuth0();
@@ -22,12 +22,11 @@ const Navigation = () => {
             <Navbar.Collapse className="justify-content-end">
                 {!isAuthenticated && (
                     <Navbar.Text>
-                        <Button
-                            className="genericButton"
+                        <GenericButton
                             onClick={() => loginWithRedirect()}
                         >
                             Log In
-                        </Button>
+                        </GenericButton>
                     </Navbar.Text>
                 )}
                 {isAuthenticated && (
@@ -43,12 +42,11 @@ const Navigation = () => {
                             <Link className="dropdown-item" to="/feed">Feed</Link>
                             <NavDropdown.Divider/>
                             <NavDropdown.Item>
-                                <Button
-                                    className="genericButton"
+                                <GenericButton
                                     onClick={() => logoutWithRedirect()}
                                 >
                                     Log Out
-                                </Button>
+                                </GenericButton>
                             </NavDropdown.Item>
                         </NavDropdown>
                     </Fragment>

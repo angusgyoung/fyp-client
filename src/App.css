@@ -4,16 +4,3 @@ html, #app {
   background-color: #000000;
 }
 
-.btn-primary.genericButton {
-  background-color: black;
-  border-color: #796ab8;
-}
-.btn-primary.genericButton:hover, .btn-primary.genericButton:active, .btn-primary.genericButton:focus {
-  background-color: #796ab8;
-  border-color: #796ab8;
-}
-
-.btn-primary.genericButton:focus, .btn-primary.genericButton:active {
-  background-color: #796ab8;
-  box-shadow: none;
-}
