@@ -1,35 +1,44 @@
-const API_HOST = "http://localhost:8008/api/v1/isys";
+import { authHeader } from "../helpers/authentication.helper";
+import config  from 'config';
 
-export const getPosts = async () => {
-    const response = await fetch(`${API_HOST}/posts?page=0&size=10`, {
-        method: 'GET',
-        headers: {
-            'Accept': 'application/json'
-        },
-    });
-    return response;
-};
-
-export const getPostsForUser = async (username) => {
-    const response = await fetch(`${API_HOST}/posts?username=${username}&page=0&size=10`, {
-        method: 'GET',
-        headers: {
-            'Accept': 'application/json'
-        },
-    });
-    return response;
-};
-
-export const createPost = async (post, username) => {
-    const response = await fetch(`${API_HOST}/posts`, {
+export const register = async (username, password) => {
+    const response = await fetch(`${API_HOST}/profile/create`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-            'Accept': 'application/json'
+            'Accept': 'application/json',
         },
         body: JSON.stringify({
+            'username': username,
+            'password': password
+        })
+    })
+    return response;
+}
+
+
+export const getPosts = async (page = 0) => {
+    const response = await fetch(`${API_HOST}/posts?page=${page}&size=10`, {
+        method: 'GET',
+        headers: authHeader(),
+    });
+    return response;
+};
+
+export const getPostsForUser = async (username, page = 0) => {
+    const response = await fetch(`${API_HOST}/posts?username=${username}&page=${page}&size=10`, {
+        method: 'GET',
+        headers: authHeader()
+    });
+    return response;
+};
+
+export const createPost = async (post) => {
+    const response = await fetch(`${API_HOST}/posts`, {
+        method: 'POST',
+        headers: authHeader(),
+        body: JSON.stringify({
             content: post,
-            username: username
         })
     })
     return response;
