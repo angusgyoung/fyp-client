@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { getPosts } from "../services/api";
 import WebSocketConnection from "./WebSocketConnection";
+import { authenticationService } from "../services/authentication.service";
 
 class PostAwareComponent extends Component {
     constructor(props) {
@@ -8,7 +9,7 @@ class PostAwareComponent extends Component {
         this.state = {
             wsClient: WebSocketConnection,
             posts: [],
-            user: props.user
+            currentUser: authenticationService.currentUserValue,
         }
     }
 }

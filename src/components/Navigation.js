@@ -5,7 +5,7 @@ import NavDropdown from "react-bootstrap/NavDropdown";
 
 import "./Navigation.css"
 import GenericButton from "./GenericButton";
-import { authenticationService } from "../helpers/authentication";
+import { authenticationService } from "../services/authentication.service";
 
 class Navigation extends Component {
 
@@ -18,14 +18,12 @@ class Navigation extends Component {
     }
 
     render() {
-        const { currentUser } = this.state;
-
         return (
             <Navbar id="navbar">
                 <Link id="brand" className="navbar-brand" to="/home">I Said You Said</Link>
                 <Navbar.Toggle />
                 <Navbar.Collapse className="justify-content-end">
-                    {currentUser == null && (
+                    {this.state.currentUser == null && (
                         <Navbar.Text>
                             <Link to="/login">
                                 <GenericButton>
@@ -34,15 +32,15 @@ class Navigation extends Component {
                             </Link>
                         </Navbar.Text>
                     )}
-                    {currentUser && (
+                    {this.state.currentUser && (
                         <Fragment>
                             <img
                                 id="navbarProfilePicture"
-                                src="https://media3.giphy.com/media/XRf8O3CECToRy/giphy.gif"
+                                src={this.state.currentUser.profile.profileImageUrl}
                                 alt="Profile"
                                 className="rounded-circle"
                             />
-                            <NavDropdown title={currentUser} id="basic-nav-dropdown">
+                            <NavDropdown title={this.state.currentUser.profile.username} id="basic-nav-dropdown">
                                 <Link className="dropdown-item" to="/profile">Profile</Link>
                                 <Link className="dropdown-item" to="/feed">Feed</Link>
                                 <NavDropdown.Divider />

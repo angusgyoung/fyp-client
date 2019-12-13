@@ -8,15 +8,11 @@ class WebSocketConnection {
         this.state = {
             wsClient: createWsClient()
         }
-    }
-
-    getClient() {
-        return this.wsClient;
+        this.addSubscription = this.addSubscription.bind(this);
     }
 
     addSubscription(identifier, onMessageCallback) {
         this.state.wsClient.subscribe(identifier, onMessageCallback);
-        console.log('added subscription to ', identifier);
     }
 
     componentWillUnmount() {

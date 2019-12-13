@@ -12,7 +12,7 @@ class LoginForm extends Component {
         super(props);
 
         if(authenticationService.currentUserValue) {
-            this.props.history.push('/');
+            this.props.history.push('/')
         }
 
         this.usernameChanged = this.usernameChanged.bind(this);
@@ -32,15 +32,16 @@ class LoginForm extends Component {
         })
     }
 
-    async submitLoginCredentials() {
+    submitLoginCredentials() {
         authenticationService.login(this.state.username, this.state.password)
         .then(
             user => {
-                const { from } = this.props.location.state || { from: { pathname: "/"} };
+                //const { from } = this.props.location.state || { from: { pathname: "/"} };
+                const { from } = { from: { pathname: "/"} };
                 this.props.history.push(from)
             },
             error => {
-                console.log('Authentication failed!');
+                console.log('Authentication failed', error.message);
             }
         );
     }

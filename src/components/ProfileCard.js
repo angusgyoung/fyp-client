@@ -1,28 +1,24 @@
 import React from "react";
 import Loading from "../components/Loading";
-import {useAuth0} from "../react-auth0-spa";
 import Card from "react-bootstrap/Card";
 
 import "./ProfileCard.css"
 import NewPostButton from "./NewPostButton";
 import theme from "../util/theme";
+import { authenticationService } from "../services/authentication.service";
 
 const ProfileCard = () => {
-    const {loading, user} = useAuth0();
+    const currentUser  = authenticationService.currentUserValue;
 
-    if (loading || !user) {
-        return <Loading/>;
-    }
-
-    return (
+    return (        
         <Card className="profileCard p-0">
             <Card.Img
-                src={user.picture}
+                src={currentUser.profile.profileImageUrl}
                 alt="Profile"
                 className="rounded-circle p-1"
             />
-            <Card.Title className="p-1">{user.nickname}</Card.Title>
-            <Card.Subtitle className="text-muted p-1">{user.email}</Card.Subtitle>
+            <Card.Title className="p-1">{ currentUser.username }</Card.Title>
+            <Card.Subtitle className="text-muted p-1">{ currentUser.id }</Card.Subtitle>
             <Card.Subtitle style={styles.composePostContainer}>
                 <div>
                     <NewPostButton/>

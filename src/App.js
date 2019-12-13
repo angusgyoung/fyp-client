@@ -6,7 +6,7 @@ import Navigation from "./components/Navigation";
 import Footer from "./components/Footer";
 import Home from "./pages/Home";
 import Profile from "./pages/Profile";
-import history from "./services/history";
+import history from "./helpers/history";
 // styles
 import "./App.css";
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -14,7 +14,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Container from "react-bootstrap/Container";
 import Feed from "./pages/Feed";
 import Login from "./pages/Login";
-import { authenticationService } from "./helpers/authentication";
+import { authenticationService } from "./services/authentication.service";
 
 class App extends Component {
     constructor(props) {
