@@ -6,15 +6,12 @@ import NavDropdown from "react-bootstrap/NavDropdown";
 import "./Navigation.css"
 import GenericButton from "./GenericButton";
 import { authenticationService } from "../services/authentication.service";
+import { userContext } from "../context/UserContext";
 
 class Navigation extends Component {
 
     constructor(props) {
         super(props);
-
-        this.state = {
-            currentUser: authenticationService.currentUserValue,
-        }
     }
 
     render() {
@@ -23,37 +20,41 @@ class Navigation extends Component {
                 <Link id="brand" className="navbar-brand" to="/home">I Said You Said</Link>
                 <Navbar.Toggle />
                 <Navbar.Collapse className="justify-content-end">
-                    {this.state.currentUser == null && (
-                        <Navbar.Text>
-                            <Link to="/login">
-                                <GenericButton>
-                                    Log In
-                                </GenericButton>
-                            </Link>
-                        </Navbar.Text>
-                    )}
-                    {this.state.currentUser && (
-                        <Fragment>
-                            <img
-                                id="navbarProfilePicture"
-                                src={this.state.currentUser.profile.profileImageUrl}
-                                alt="Profile"
-                                className="rounded-circle"
-                            />
-                            <NavDropdown title={this.state.currentUser.profile.username} id="basic-nav-dropdown">
-                                <Link className="dropdown-item" to="/profile">Profile</Link>
-                                <Link className="dropdown-item" to="/feed">Feed</Link>
-                                <NavDropdown.Divider />
-                                <NavDropdown.Item>
-                                    <GenericButton
-                                        onClick={() => authenticationService.logout()}
-                                    >
-                                        Log Out
+                    <userContext.Consumer>
+                        {
+                            user =>
+                            user.isAuthenticated && (
+                                    <Fragment>
+                                        <img
+                                            id="navbarProfilePicture"
+                                            src={user.currentUser.profile.profileImageUrl}
+                                            alt="Profile"
+                                            className="rounded-circle"
+                                        />
+                                        <NavDropdown title={user.currentUser.profile.username} id="basic-nav-dropdown">
+                                            <Link className="dropdown-item" to="/profile">Profile</Link>
+                                            <Link className="dropdown-item" to="/feed">Feed</Link>
+                                            <NavDropdown.Divider />
+                                            <NavDropdown.Item>
+                                                <GenericButton
+                                                    onClick={() => user.logout()}
+                                                >
+                                                    Log Out
                                     </GenericButton>
-                                </NavDropdown.Item>
-                            </NavDropdown>
-                        </Fragment>
-                    )}
+                                            </NavDropdown.Item>
+                                        </NavDropdown>
+                                    </Fragment>
+                                ) || (
+                                    <Navbar.Text>
+                                        <Link to="/login">
+                                            <GenericButton>
+                                                Log In
+                                            </GenericButton>
+                                        </Link>
+                                    </Navbar.Text>
+                                )
+                        }
+                    </userContext.Consumer>
                 </Navbar.Collapse>
             </Navbar>
         );

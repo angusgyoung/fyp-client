@@ -15,18 +15,36 @@ import Container from "react-bootstrap/Container";
 import Feed from "./pages/Feed";
 import Login from "./pages/Login";
 import { authenticationService } from "./services/authentication.service";
+import { userContext } from "./context/UserContext";
+
 
 class App extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            currentUser: null
+            currentUser: {}
         }
+
+        this.checkIsAuthorised = this.checkIsAuthorised.bind(this);
+        this.setUserAfterLogin = this.setUserAfterLogin.bind(this);
+        this.logout = this.logout.bind(this);
     }
 
     componentDidMount() {
-        authenticationService.currentUser.subscribe(x => this.setState({ currentUser: x }));
+            // get and set currently logged in user to state
+            this.checkIsAuthorised();
+    }
+
+    checkIsAuthorised() {
+        let userInState = localStorage.getItem('currentUser');
+        if (userInState) {
+            this.setState({currentUser: userInState})
+        }
+    }
+
+    setUserAfterLogin(user) {
+        this.setState({currentUser: user})
     }
 
     logout() {
@@ -36,7 +54,15 @@ class App extends Component {
 
     render() {
         const { currentUser } = this.state;
+        const user = {
+            currentUser,
+            isAuthenticated : !!currentUser.profile,
+            setUserAfterLogin: this.setUserAfterLogin,
+            logout: this.logout
+        }
+
         return (
+            <userContext.Provider value={user}>
             <Router history={history}>
                 <div id="app" className="d-flex flex-column h-100">
                     <Navigation />
@@ -52,6 +78,7 @@ class App extends Component {
                     <Footer />
                 </div>
             </Router>
+            </userContext.Provider>
         )
     }
 }

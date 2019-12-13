@@ -2,9 +2,9 @@ import { authenticationService } from "../services/authentication.service";
 
 export function authHeader() {
     // return authorization header with jwt token
-    const currentUser = authenticationService.currentUserValue;
-    if (currentUser && currentUser.jwtToken) {
-        return { Authorization: `Bearer ${currentUser.jwtToken}` };
+    const token = authenticationService.userAccessToken();
+    if (token) {
+        return { Authorization: `Bearer ${token}` };
     } else {
         return {};
     }
@@ -12,21 +12,10 @@ export function authHeader() {
 
 export function authHeaderString() {
     // return authorization header with jwt token
-    const currentUser = authenticationService.currentUserValue;
-    if (currentUser && currentUser.jwtToken) {
-        return `Bearer ${currentUser.jwtToken}`;
+    const token = authenticationService.userAccessToken();
+    if (token) {
+        return `Bearer ${token}`;
     } else {
-        return '';
-    }
-}
-
-export function jwtToken() {
-    // return raw jwt token
-    const currentUser = authenticationService.currentUserValue;
-    if (currentUser && currentUser.jwtToken) {
-        return currentUser.jwtToken;
-    }
-    else {
         return '';
     }
 }

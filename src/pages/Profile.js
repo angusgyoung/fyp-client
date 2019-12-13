@@ -1,7 +1,6 @@
 import React from "react";
 import SplitPostView from "../views/SplitPostView";
 import { getPostsForUser } from "../services/api";
-import { authenticationService } from "../services/authentication.service";
 
 class Profile extends SplitPostView {
 
@@ -10,7 +9,7 @@ class Profile extends SplitPostView {
     }
 
     async componentDidMount() {
-        const profile = this.state.currentUser.profile;
+        const profile = this.context.currentUser.profile;
 
         getPostsForUser(profile.username).then(response => {
             if (response.status == 200) {

@@ -1,7 +1,8 @@
-import React, { Component } from "react";
+import React, { Component, useContext } from "react";
 import { getPosts } from "../services/api";
 import WebSocketConnection from "./WebSocketConnection";
 import { authenticationService } from "../services/authentication.service";
+import { userContext } from "../context/UserContext";
 
 class PostAwareComponent extends Component {
     constructor(props) {
@@ -9,9 +10,10 @@ class PostAwareComponent extends Component {
         this.state = {
             wsClient: WebSocketConnection,
             posts: [],
-            currentUser: authenticationService.currentUserValue,
         }
     }
 }
+
+PostAwareComponent.contextType = userContext;
 
 export default PostAwareComponent;

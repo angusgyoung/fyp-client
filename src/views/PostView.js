@@ -1,5 +1,4 @@
 import React from "react";
-import Loading from "../components/Loading";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import ProfileCard from "../components/ProfileCard";

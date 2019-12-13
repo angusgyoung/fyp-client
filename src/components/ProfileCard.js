@@ -1,30 +1,33 @@
 import React from "react";
-import Loading from "../components/Loading";
 import Card from "react-bootstrap/Card";
 
 import "./ProfileCard.css"
 import NewPostButton from "./NewPostButton";
 import theme from "../util/theme";
-import { authenticationService } from "../services/authentication.service";
+import { userContext } from "../context/UserContext";
 
 const ProfileCard = () => {
-    const currentUser  = authenticationService.currentUserValue;
+    return (
+        <userContext.Consumer>
+            {
+                user =>
+                    <Card className="profileCard p-0">
+                        <Card.Img
+                            src={user.currentUser.profile.profileImageUrl}
+                            alt="Profile"
+                            className="rounded-circle p-1"
+                        />
+                        <Card.Title className="p-1">{user.currentUser.profile.username}</Card.Title>
+                        <Card.Subtitle className="text-muted p-1">{user.currentUser.profile.id}</Card.Subtitle>
+                        <Card.Subtitle style={styles.composePostContainer}>
+                            <div>
+                                <NewPostButton />
+                            </div>
+                        </Card.Subtitle>
+                    </Card>
+            }
+        </userContext.Consumer>
 
-    return (        
-        <Card className="profileCard p-0">
-            <Card.Img
-                src={currentUser.profile.profileImageUrl}
-                alt="Profile"
-                className="rounded-circle p-1"
-            />
-            <Card.Title className="p-1">{ currentUser.username }</Card.Title>
-            <Card.Subtitle className="text-muted p-1">{ currentUser.id }</Card.Subtitle>
-            <Card.Subtitle style={styles.composePostContainer}>
-                <div>
-                    <NewPostButton/>
-                </div>
-            </Card.Subtitle>
-        </Card>
     );
 }
 

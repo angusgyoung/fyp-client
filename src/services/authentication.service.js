@@ -3,15 +3,11 @@ import { handleResponse } from '../helpers/authentication.helper';
 
 const API_URL = process.env.REACT_APP_API_URL;
 
-const currentUserSubject = new BehaviorSubject(JSON.parse(localStorage.getItem('currentUser')));
-
 export const authenticationService = {
     login,
     logout,
-    currentUser: currentUserSubject.asObservable(),
-    get currentUserValue () { return currentUserSubject.value }
+    userAccessToken
 };
-
 
 function login(username, password) {
     return fetch(`${API_URL}/auth`, {
@@ -29,7 +25,6 @@ function login(username, password) {
     .then(user => {
         // store user details and jwt token in local storage to keep user logged in between page refreshes
         localStorage.setItem('currentUser', JSON.stringify(user));
-        currentUserSubject.next(user);
         console.log(user);
         return user;
     })   
@@ -38,5 +33,9 @@ function login(username, password) {
 function logout() {
     // remove user from local storage to log user out
     localStorage.removeItem('currentUser');
-    currentUserSubject.next(null);
+}
+
+function userAccessToken() {
+    let currentUser = JSON.parse(localStorage.getItem('currentUser'))
+    return currentUser.jwtToken;
 }
