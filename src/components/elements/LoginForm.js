@@ -2,19 +2,20 @@ import React, { Component } from "react";
 import Form from "react-bootstrap/Form";
 import GenericButton from "./GenericButton";
 
-import { login } from "../services/api";
 import "./LoginForm.css"
-import { authenticationService } from "../services/authentication.service";
-import { userContext } from "../context/UserContext";
+import { userContext } from "../../context/UserContext";
+import { authenticationHelper } from "../../helpers/authentication";
 
 class LoginForm extends Component {
 
     constructor(props) {
         super(props);
 
-        if(authenticationService.currentUserValue) {
-            this.props.history.push('/')
-        }
+        //TODO if authenticated we should not allow user to
+        // go to login page
+        // if(lala) {
+        //     this.props.history.push('/')
+        // }
 
         this.usernameChanged = this.usernameChanged.bind(this);
         this.passwordChanged = this.passwordChanged.bind(this)
@@ -35,7 +36,7 @@ class LoginForm extends Component {
 
     submitLoginCredentials(event, user) {
         event.preventDefault();
-        authenticationService.login(this.state.username, this.state.password)
+        authenticationHelper.login(this.state.username, this.state.password)
         .then(
             newUser => {
                 const { from } = { from: { pathname: "/feed"} };
@@ -44,7 +45,7 @@ class LoginForm extends Component {
                 user.setUserAfterLogin(newUser);
             },
             error => {
-                console.log('Authentication failed', error.message);
+                console.error('Authentication failed', error.message);
             }
         );
     }

@@ -4,15 +4,10 @@ import Navbar from "react-bootstrap/Navbar";
 import NavDropdown from "react-bootstrap/NavDropdown";
 
 import "./Navigation.css"
-import GenericButton from "./GenericButton";
-import { authenticationService } from "../services/authentication.service";
+import GenericButton from "./elements/GenericButton";
 import { userContext } from "../context/UserContext";
 
 class Navigation extends Component {
-
-    constructor(props) {
-        super(props);
-    }
 
     render() {
         return (
@@ -44,7 +39,7 @@ class Navigation extends Component {
                                             </NavDropdown.Item>
                                         </NavDropdown>
                                     </Fragment>
-                                ) || (
+                                ) || 
                                     <Navbar.Text>
                                         <Link to="/login">
                                             <GenericButton>
@@ -52,7 +47,7 @@ class Navigation extends Component {
                                             </GenericButton>
                                         </Link>
                                     </Navbar.Text>
-                                )
+                                
                         }
                     </userContext.Consumer>
                 </Navbar.Collapse>

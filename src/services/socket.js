@@ -8,8 +8,8 @@ export const createWsClient = () => {
     const config = {
         brokerURL: WEBSOCKET_URI,
         reconnectDelay: 5000,
-        onConnect: () => console.log('Websocket connected'),
-        onDisconnect: () => console.log('Websocket disconnected')
+        onConnect: () => console.debug('Websocket connected'),
+        onDisconnect: () => console.debug('Websocket disconnected')
     };
     client = new Client(config);
     

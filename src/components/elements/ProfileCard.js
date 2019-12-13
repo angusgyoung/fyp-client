@@ -1,10 +1,13 @@
 import React from "react";
 import Card from "react-bootstrap/Card";
+import Moment from "react-moment"
 
 import "./ProfileCard.css"
 import NewPostButton from "./NewPostButton";
-import theme from "../util/theme";
-import { userContext } from "../context/UserContext";
+import theme from "../../util/theme";
+import { userContext } from "../../context/UserContext";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
 
 const ProfileCard = () => {
     return (
@@ -18,7 +21,19 @@ const ProfileCard = () => {
                             className="rounded-circle p-1"
                         />
                         <Card.Title className="p-1">{user.currentUser.profile.username}</Card.Title>
-                        <Card.Subtitle className="text-muted p-1">{user.currentUser.profile.id}</Card.Subtitle>
+                        <Card.Subtitle className="text-muted p-1">
+                            <Row>
+                                <Col>
+                                    Account Born on
+                                </Col>
+                                <Col>
+                                    <Moment unix format="MMM D YYYY">
+                                        {user.currentUser.profile.accountCreatedTimestamp}
+                                    </Moment>
+                                </Col>
+                            </Row>
+
+                        </Card.Subtitle>
                         <Card.Subtitle style={styles.composePostContainer}>
                             <div>
                                 <NewPostButton />

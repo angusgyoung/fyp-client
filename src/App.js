@@ -3,7 +3,7 @@ import { Route, Router, Switch } from "react-router-dom";
 
 import PrivateRoute from "./components/PrivateRoute";
 import Navigation from "./components/Navigation";
-import Footer from "./components/Footer";
+import Footer from "./components/elements/Footer";
 import Home from "./pages/Home";
 import Profile from "./pages/Profile";
 import history from "./helpers/history";
@@ -14,8 +14,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Container from "react-bootstrap/Container";
 import Feed from "./pages/Feed";
 import Login from "./pages/Login";
-import { authenticationService } from "./services/authentication.service";
 import { userContext } from "./context/UserContext";
+import { authenticationHelper } from "./helpers/authentication";
 
 
 class App extends Component {
@@ -48,7 +48,7 @@ class App extends Component {
     }
 
     logout() {
-        authenticationService.logout();
+        authenticationHelper.logout();
         history.push('/login');
     }
 

@@ -1,6 +1,4 @@
-import React, { Component } from "react";
 import { createWsClient } from "../services/socket";
-import { getPosts } from "../services/api";
 
 class WebSocketConnection {
 
