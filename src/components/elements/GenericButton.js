@@ -4,7 +4,7 @@ import "./GenericButton.css"
 
 const GenericButton = (props) => {
     return (
-        <Button className="genericButton" onClick={props.onClick}>{props.children}</Button>
+        <Button className="genericButton" type={props.type} onClick={props.onClick}>{props.children}</Button>
     );
 }
 

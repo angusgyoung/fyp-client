@@ -1,6 +1,4 @@
-import React, { Component } from "react";
 import { createWsClient } from "../services/socket";
-import { getPosts } from "../services/api";
 
 class WebSocketConnection {
 
@@ -8,15 +6,11 @@ class WebSocketConnection {
         this.state = {
             wsClient: createWsClient()
         }
-    }
-
-    getClient() {
-        return this.wsClient;
+        this.addSubscription = this.addSubscription.bind(this);
     }
 
     addSubscription(identifier, onMessageCallback) {
         this.state.wsClient.subscribe(identifier, onMessageCallback);
-        console.log('added subscription to ', identifier);
     }
 
     componentWillUnmount() {

@@ -1,6 +1,6 @@
-import React, { Component } from "react";
-import { getPosts } from "../services/api";
-import WebSocketConnection from "./WebSocketConnection";
+import { Component } from "react";
+import WebSocketConnection from "../WebSocketConnection";
+import { userContext } from "../../context/UserContext";
 
 class PostAwareComponent extends Component {
     constructor(props) {
@@ -8,9 +8,10 @@ class PostAwareComponent extends Component {
         this.state = {
             wsClient: WebSocketConnection,
             posts: [],
-            user: props.user
         }
     }
 }
+
+PostAwareComponent.contextType = userContext;
 
 export default PostAwareComponent;

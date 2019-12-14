@@ -1,16 +1,15 @@
-import React, {Component, useState} from "react";
+import React, {Component} from "react";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 
 import GenericButton from "./GenericButton";
 import "./ComposePostModal.css";
-import WebSocketConnection from "./WebSocketConnection";
 
 import FormGroup from "react-bootstrap/FormGroup";
 import FormLabel from "react-bootstrap/FormLabel";
 import FormControl from "react-bootstrap/FormControl";
-import { createPost } from "../services/api";
+import { createPost } from "../../services/api";
 
 class ComposePostModal extends Component {
 
@@ -30,8 +29,6 @@ class ComposePostModal extends Component {
     }
 
     parsePostContent() {
-        console.log(this.state.post);
-
         createPost(this.state.post, 'testuser+1234@gmail.com');
         this.closeModal();
     }

@@ -1,6 +1,6 @@
 import {Client} from "@stomp/stompjs"
 
-const WEBSOCKET_URI = 'ws://localhost:8008/api/v1/isys/websocket';
+const WEBSOCKET_URI = process.env.REACT_APP_WEBSOCKET_URL
 
 export const createWsClient = () => {
     let client;
@@ -8,8 +8,11 @@ export const createWsClient = () => {
     const config = {
         brokerURL: WEBSOCKET_URI,
         reconnectDelay: 5000,
+        onConnect: () => console.debug('Websocket connected'),
+        onDisconnect: () => console.debug('Websocket disconnected')
     };
     client = new Client(config);
+    
     client.activate();
     return client;
 }

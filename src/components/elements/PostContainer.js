@@ -1,11 +1,11 @@
 import React, {useState} from "react";
 
-import theme from "../util/theme";
+import theme from "../../util/theme";
 import Card from "react-bootstrap/Card";
 import Collapse from "react-bootstrap/Collapse";
 import Moment from 'react-moment';
 
-import GenericButton from '../components/GenericButton';
+import GenericButton from './GenericButton';
 
 const PostContainer = (props) => {
 
