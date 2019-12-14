@@ -62,7 +62,11 @@ function login(username, password) {
     .then(user => {
         // store user details and jwt token in local storage to keep user logged in between page refreshes
         localStorage.setItem('currentUser', JSON.stringify(user));
+        console.debug('Authentication complete for user', user.profile.username);
         return user;
+    }, 
+        error => {
+            console.debug('Authentication failed', error);
     })   
 }
 

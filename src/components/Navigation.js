@@ -31,11 +31,9 @@ class Navigation extends Component {
                                             <Link className="dropdown-item" to="/feed">Feed</Link>
                                             <NavDropdown.Divider />
                                             <NavDropdown.Item>
-                                                <GenericButton
-                                                    onClick={() => user.logout()}
-                                                >
+                                                <GenericButton onClick={() => user.logout()}>
                                                     Log Out
-                                    </GenericButton>
+                                                </GenericButton>
                                             </NavDropdown.Item>
                                         </NavDropdown>
                                     </Fragment>

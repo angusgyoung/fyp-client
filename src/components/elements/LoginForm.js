@@ -43,9 +43,6 @@ class LoginForm extends Component {
                 this.props.history.push(from)
 
                 user.setUserAfterLogin(newUser);
-            },
-            error => {
-                console.error('Authentication failed', error.message);
             }
         );
     }
