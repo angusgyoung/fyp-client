@@ -18,20 +18,34 @@ export const register = async (username, password) => {
 }
 
 
-export const getPosts = async (page = 0) => {
-    const response = await fetch(`${API_URL}/posts?page=${page}&size=10`, {
-        method: 'GET',
-        headers: authenticationHelper.authHeader(),
-    });
-    return response;
+export const getPosts = (page = 0) => {
+    return new Promise((resolve, reject) => {
+        fetch(`${API_URL}/posts?page=${page}&size=10`, {
+            method: 'GET',
+            headers: authenticationHelper.authHeader(),
+        })
+        .then(response => parsePostsFromResponse(response))
+        .then(posts => resolve(posts))
+        .catch(error => {
+            console.error(error);
+            reject(error);
+        });
+    })
 };
 
-export const getPostsForUser = async (username, page = 0) => {
-    const response = await fetch(`${API_URL}/posts?username=${username}&page=${page}&size=10`, {
-        method: 'GET',
-        headers: authenticationHelper.authHeader(),
-    });
-    return response;
+export const getPostsForUser = (username, page = 0) => {
+    return new Promise((resolve, reject) => {
+        fetch(`${API_URL}/posts?username=${username}&page=${page}&size=10`, {
+            method: 'GET',
+            headers: authenticationHelper.authHeader(),
+        })
+        .then(response => parsePostsFromResponse(response))
+        .then(posts => resolve(posts))
+        .catch(error => {
+            console.error(error);
+            reject(error);
+        });
+    })
 };
 
 export const createPost = async (post) => {
@@ -49,4 +63,16 @@ export const createPost = async (post) => {
     return response;
 }
 
-export default {getPosts, getPostsForUser};
+const parsePostsFromResponse = (response) => {
+    return new Promise((resolve, reject) => {
+        if (response.status === 204) {
+            resolve();
+        } else {
+            response.json().then(data => {
+                resolve(data.content);
+            }).catch(error => reject(error));
+        }
+    });
+}
+
+export default { getPosts, getPostsForUser };

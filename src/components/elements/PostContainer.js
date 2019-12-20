@@ -58,7 +58,7 @@ const styles = {
         borderStyle: "solid",
         borderColor: theme.BORDER_COLOR,
         marginBottom: theme.GLOBAL_MARGIN,
-        width: "100%"
+        width: "100%",
     },
 
     postContainerUser: {
