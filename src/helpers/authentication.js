@@ -1,4 +1,7 @@
+import handleResponse from "./response-parser";
+
 const API_URL = process.env.REACT_APP_API_URL;
+const API_AUTH_REFRESH_LIMIT = process.env.REACT_APP_REFRESH_LIMIT || 60;
 
 export const authenticationHelper = {
   login,
@@ -26,24 +29,6 @@ function authHeaderString() {
   } else {
     return "";
   }
-}
-
-function handleResponse(response) {
-  return response.text().then(text => {
-    const data = text && JSON.parse(text);
-    if (!response.ok) {
-      if ([401, 403].indexOf(response.status) !== -1) {
-        // auto logout if 401 Unauthorized or 403 Forbidden response returned from api
-        logout();
-        window.location.reload(true);
-      }
-
-      const error = (data && data.message) || response.statusText;
-      return Promise.reject(error);
-    }
-
-    return data;
-  });
 }
 
 function login(username, password) {
@@ -89,23 +74,25 @@ function userAccessToken() {
 // we should call the token refresh endpoint to get a new token
 async function handleTokenExpiry() {
   let userDetails = JSON.parse(localStorage.getItem("currentUser"));
-  if (userDetails.expiryDate - new Date().getTime() / 1000 < 60) {
+  if (
+    userDetails.expiryDate - new Date().getTime() / 1000 <
+    API_AUTH_REFRESH_LIMIT
+  ) {
     console.debug("Token is within expiry range, fetching new token");
-    let response = await fetch(`${API_URL}/auth/refresh`, {
+    return fetch(`${API_URL}/auth/refresh`, {
       method: "GET",
       headers: {
         Accept: "application/json",
         Authorization: authHeaderString()
       }
-    });
-    if (response) {
-      let newUserAuthDetails = await response.json();
+    })
+      .then(handleResponse)
+      .then(newUserAuthDetails => {
+        userDetails.jwtToken = newUserAuthDetails.jwtToken;
+        userDetails.expiryDate = newUserAuthDetails.expiryDate;
 
-      userDetails.jwtToken = newUserAuthDetails.jwtToken;
-      userDetails.expiryDate = newUserAuthDetails.expiryDate;
-
-      // set the updated user details in local storage
-      localStorage.setItem("currentUser", JSON.stringify(userDetails));
-    }
+        // set the updated user details in local storage
+        localStorage.setItem("currentUser", JSON.stringify(userDetails));
+      });
   }
 }
