@@ -1,55 +1,73 @@
-import React, {useState} from "react";
+import React, {Component, useState} from "react";
 
 import theme from "../../util/theme";
 import Card from "react-bootstrap/Card";
 import Collapse from "react-bootstrap/Collapse";
-import Moment from 'react-moment';
+import Moment from "react-moment";
 
-import GenericButton from './GenericButton';
+import GenericButton from "./GenericButton";
+import { retrievePostSignature } from "../../services/api";
 
-const PostContainer = (props) => {
+class PostContainer extends Component {
+    constructor(props){
+        super(props);
+        this.state = {
+            isOpen : false,
+            postSignature : "Fetching..."
+        };
 
-    const [open, setOpen] = useState(false);
+        this.viewSignature = this.viewSignature.bind(this);
 
-    let {username, content, timestamp} = props.post;
+    }
 
-    return (
-        <Card style={styles.postContainer}>
-            <Card.Title style={styles.postContainerUser}>
-                <div className="float-left">
-                    {username}
-                </div>
-                <div className="text-muted float-right">
-                    <Moment unix format="h:mm a · MMM D YYYY">{timestamp}</Moment>
-                </div>
-            </Card.Title>
-            <Card.Text style={styles.postContainerText}>
-                {content}
-            </Card.Text>
-            <Card.Subtitle style={styles.postContainerVerificationBar}>
-                <div>
-                    <div className="float-left">
-                        Integrity
+    async viewSignature(){
+        const {signatureKey} = this.props.post;
+        const {isOpen} = this.state;
+
+        const postSignature = await retrievePostSignature(signatureKey);
+        this.setState({isOpen : !isOpen, postSignature});
+    }
+
+    render() {
+        const {isOpen, postSignature} = this.state;
+
+        const {post} = this.props;
+        const {username, content, timestamp, signatureKey} = post;
+
+        return (
+            <Card style={styles.postContainer}>
+                <Card.Title style={styles.postContainerUser}>
+                    <div className="float-left">{username}</div>
+                    <div className="text-muted float-right">
+                        <Moment unix format="h:mm a · MMM D YYYY">
+                            {timestamp}
+                        </Moment>
                     </div>
-                    <div className="float-right">
-                        <GenericButton
-                            onClick={() => setOpen(!open)}
-                            className="genericButton"
-                            aria-controls="example-collapse-text"
-                            aria-expanded={open}
-                        >
-                            See Post Hash
-                        </GenericButton>
+                </Card.Title>
+                <Card.Text style={styles.postContainerText}>{content}</Card.Text>
+                <Card.Subtitle style={styles.postContainerVerificationBar}>
+                    <div>
+                        <div className="text-muted float-left">
+                            Signature Key: {signatureKey}
+                        </div>
+                        <div className="float-right">
+                            <GenericButton
+                                onClick={this.viewSignature}
+                                className="genericButton"
+                                aria-controls="example-collapse-text"
+                                aria-expanded={isOpen}
+                            >
+                                See Post Signature
+                            </GenericButton>
+                        </div>
                     </div>
-                </div>
-            </Card.Subtitle>
-            <Collapse in={open} style={styles.verificationExpandView}>
-                <div id="example-collapse-text">
-                    DonecorcinuncmaximusetrisusetcommodoaccumsanmetusSedsitametesttinciduntauctornuncethendreritpurusSedidconsequattortorVivamusvehiculadiamnislsedconsecteturfelisluctusutPellentesquehabitantmorbitristiquesenectusetnetusetmalesuadafamesacturpisegestasCurabiturtristiqueetmetusvelvestibulumIntegeracnisinonenimdapibuspellentesquevitaesitametnullaCurabiturpretiumminondiamfaucibusquisfringillaloremcommodoUtsitametelementumtellusPhaselluspretiumloreminligulaaliquamconvallisutnectellusNamiaculisseddolornecfacilisisDonecpretiumlectussedconsequatinterdumSuspendisseuteliteudiamfeugiatconsequatategetligulaIntegersagittispurusegestasmagnasagittisvehiculaPraesenteuismodgravidasollicitudinMaecenasbibendumnuncnonhendreritconvallismetusnisitristiqueelitsempercursusipsumestidvelit
-                </div>
-            </Collapse>
-        </Card>
-    );
+                </Card.Subtitle>
+                <Collapse in={isOpen} style={styles.verificationExpandView}>
+                    <div id="example-collapse-text">{postSignature}</div>
+                </Collapse>
+            </Card>
+        );
+    }
 }
 
 const styles = {
@@ -58,7 +76,7 @@ const styles = {
         borderStyle: "solid",
         borderColor: theme.BORDER_COLOR,
         marginBottom: theme.GLOBAL_MARGIN,
-        width: "100%",
+        width: "100%"
     },
 
     postContainerUser: {
@@ -78,12 +96,12 @@ const styles = {
         borderTopColor: theme.BORDER_COLOR,
         padding: theme.GLOBAL_PADDING
     },
-        
+
     verificationExpandView: {
         padding: theme.GLOBAL_PADDING,
         backgroundColor: theme.GREY,
         fontFamily: "Consolas,monaco,monospace"
     }
-}
+};
 
 export default PostContainer;
