@@ -1,4 +1,5 @@
 import { authenticationHelper } from "../helpers/authentication";
+import { signClearText } from "../helpers/crypto";
 import handleResponse from "../helpers/response-parser";
 
 const API_URL = process.env.REACT_APP_API_URL;
@@ -55,10 +56,13 @@ export const getPostsForUser = async (username, page = 0) => {
     });
 };
 
-export const createPost = async post => {
+export const createPost = async (post, passphrase) => {
     await authenticationHelper.handleTokenExpiry();
-    //TODO client side signing should enter here
-    let signatureKey = await publishPostSignature("thisShouldBeAPGPSignature");
+
+    // sign the post using the keypair in local storage
+    // and insert into the dht
+    let signatureKey = await signClearText(post, passphrase)
+        .then(publishPostSignature);
 
     const response = await fetch(`${API_URL}/posts`, {
         method: "POST",
@@ -76,6 +80,7 @@ export const createPost = async post => {
 };
 
 export const publishPostSignature = async postSignature => {
+    console.log("Post Signature:", postSignature);
     const response = await fetch(`${DHT_NODE_URL}/insert`, {
         method: "PUT",
         headers: {

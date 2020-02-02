@@ -7,6 +7,7 @@
     "bootstrap": "^4.3.1",
     "history": "^4.10.1",
     "moment": "^2.24.0",
+    "openpgp": "^4.8.1",
     "react": "^16.10.2",
     "react-bootstrap": "^1.0.0-beta.14",
     "react-dom": "^16.10.2",

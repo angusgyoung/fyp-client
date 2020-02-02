@@ -29,7 +29,7 @@ class ComposePostModal extends Component {
     }
 
     parsePostContent() {
-        createPost(this.state.post, 'testuser+1234@gmail.com');
+        createPost(this.state.post, 'test');
         this.closeModal();
     }
 

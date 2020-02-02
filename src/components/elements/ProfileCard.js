@@ -4,6 +4,8 @@ import Moment from "react-moment"
 
 import "./ProfileCard.css"
 import NewPostButton from "./NewPostButton";
+import SetKeypairButton from "./SetKeypairButton";
+
 import theme from "../../util/theme";
 import { userContext } from "../../context/UserContext";
 import Row from "react-bootstrap/Row";
@@ -37,6 +39,9 @@ const ProfileCard = () => {
                         <Card.Subtitle style={styles.composePostContainer}>
                             <div>
                                 <NewPostButton />
+                            </div>
+                            <div>
+                                <SetKeypairButton />
                             </div>
                         </Card.Subtitle>
                     </Card>
