@@ -1,34 +1,30 @@
 <template>
     <Card class="post-container-card">
-        <b-card-title>
+        <div>
             <b-row>
-                <b-col>{{ post.username }}</b-col>
                 <b-col>
-                    {{ post.timestamp | moment('h:mm a · MMM D YYYY') }}
+                    <a v-bind:href="`/profile/${post.username}`">{{ post.username }}</a>
                 </b-col>
+                <b-col
+                    class="text-right text-muted"
+                >{{ post.timestamp | moment('h:mm a · MMM D YYYY') }}</b-col>
             </b-row>
-        </b-card-title>
-        <div class="border-top my-5" />
-        <b-card-text>
-            {{ post.content }}
-        </b-card-text>
-        <div class="border-top my-3" />
+        </div>
+        <b-card-text>{{ post.content }}</b-card-text>
         <b-card-sub-title>
-            <b-row id="">
-                <b-col class="text-muted">
-                    {{ post.signatureKey }}
-                </b-col>
+            <b-row id>
+                <b-col class="text-muted">{{ post.signatureKey }}</b-col>
 
                 <b-col>
                     <b-button
+                        class="float-right"
                         v-b-toggle="`post-signature-collapse-${post.id}`"
                         size="sm"
                         variant="outline-success"
-                        >Verify</b-button
-                    >
+                    >Verify</b-button>
                 </b-col>
             </b-row>
-            <b-collapse :id="`post-signature-collapse-${post.id}`">
+            <b-collapse class="mt-2" :id="`post-signature-collapse-${post.id}`">
                 <b-card>Loading...</b-card>
             </b-collapse>
         </b-card-sub-title>
@@ -36,7 +32,7 @@
 </template>
 
 <script>
-import Card from './Card.vue';
+import Card from "./Card.vue";
 
 export default {
     components: {
@@ -50,7 +46,11 @@ export default {
 
 <style scoped>
 .post-container-card {
-    margin: 5px;
+    margin-bottom: 10px;
     text-align: left;
+}
+
+.post-container-card * {
+    padding-bottom: 3px;
 }
 </style>
