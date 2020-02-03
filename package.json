@@ -1,38 +1,50 @@
 {
-  "name": "isaid-yousaid-client",
-  "version": "0.1.0",
-  "private": true,
-  "dependencies": {
-    "@stomp/stompjs": "^5.4.2",
-    "bootstrap": "^4.3.1",
-    "history": "^4.10.1",
-    "moment": "^2.24.0",
-    "react": "^16.10.2",
-    "react-bootstrap": "^1.0.0-beta.14",
-    "react-dom": "^16.10.2",
-    "react-infinite-scroll-component": "^5.0.4",
-    "react-moment": "^0.9.6",
-    "react-router-dom": "^5.1.2",
-    "react-scripts": "3.2.0",
-    "rxjs": "^6.5.3",
-    "sockjs-client": "^1.4.0"
-  },
-  "scripts": {
-    "start": "react-scripts start"
-  },
-  "eslintConfig": {
-    "extends": "react-app"
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
+    "name": "fyp-client",
+    "version": "0.1.0",
+    "private": true,
+    "scripts": {
+        "serve": "vue-cli-service serve",
+        "build": "vue-cli-service build",
+        "lint": "vue-cli-service lint"
+    },
+    "dependencies": {
+        "axios": "^0.19.2",
+        "bootstrap": "^4.4.1",
+        "bootstrap-vue": "^2.2.2",
+        "core-js": "^3.4.4",
+        "js-cookie": "^2.2.1",
+        "vee-validate": "^3.2.1",
+        "vue": "^2.6.11",
+        "vue-moment": "^4.1.0",
+        "vue-router": "^3.1.5",
+        "vuex": "^3.1.2",
+        "vuex-persistedstate": "^2.7.0"
+    },
+    "devDependencies": {
+        "@vue/cli-plugin-babel": "^4.1.0",
+        "@vue/cli-plugin-eslint": "^4.1.0",
+        "@vue/cli-service": "^4.1.0",
+        "babel-eslint": "^10.0.3",
+        "eslint": "^5.16.0",
+        "eslint-plugin-vue": "^5.0.0",
+        "vue-template-compiler": "^2.6.10"
+    },
+    "eslintConfig": {
+        "root": true,
+        "env": {
+            "node": true
+        },
+        "extends": [
+            "plugin:vue/essential",
+            "eslint:recommended"
+        ],
+        "rules": {},
+        "parserOptions": {
+            "parser": "babel-eslint"
+        }
+    },
+    "browserslist": [
+        "> 1%",
+        "last 2 versions"
     ]
-  }
 }
