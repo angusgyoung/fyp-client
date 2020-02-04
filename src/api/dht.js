@@ -2,15 +2,23 @@ import axios from "axios";
 
 const DHT_URL = "http://localhost:3000";
 
-const publishSignature = async postSignature => {
+const publishSignature = postSignature => {
     return new Promise(resolve => {
         axios(`${DHT_URL}/insert`, {
-            method: "POST",
+            method: "PUT",
             data: {
-                postSignature
+                data: postSignature
             }
         }).then(res => resolve(res.data));
     });
 };
 
-export { publishSignature };
+const getSingature = key => {
+    return new Promise(resolve => {
+        axios(`${DHT_URL}/lookup/${key}`, {
+            method: "GET"
+        }).then(res => resolve(res.data));
+    });
+};
+
+export { publishSignature, getSingature };

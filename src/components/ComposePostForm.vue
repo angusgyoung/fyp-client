@@ -6,7 +6,7 @@
                 label="What do you want to say"
                 label-for="post-content-input"
                 :invalid-feedback="postContentInvalid"
-                :state="state"
+                :state="postContentState"
             >
                 <b-form-textarea
                     id="post-content-input"
@@ -22,13 +22,12 @@
                 label-for="signing-passphrase-input"
                 :invalid-feedback="signingPassphraseInvalid"
                 :valid-feedback="signingPassphraseValid"
-                :state="state"
+                :state="signingPassphraseState"
             >
                 <b-form-input
                     id="signing-passphrase-input"
                     type="password"
                     v-model="form.signingPassphrase"
-                    :state="state"
                     trim
                 ></b-form-input>
             </b-form-group>
@@ -43,7 +42,6 @@
                     <b-button
                         variant="outline-primary"
                         v-b-toggle="'preview-signature-collapse'"
-                        @click="previewSignature"
                         >Preview Signature</b-button
                     >
                     <b-button
@@ -57,9 +55,13 @@
 
             <b-row>
                 <b-collapse class="mt-2" id="preview-signature-collapse">
-                    <div>
-                        {{ this.signature }}
-                    </div>
+                    <b-card
+                        v-if="currentSignature"
+                        id="post-signature-preview"
+                        class="code-format-card"
+                    >
+                        {{ currentSignature }}
+                    </b-card>
                 </b-collapse>
             </b-row>
         </b-form>
@@ -67,17 +69,17 @@
 </template>
 
 <script>
-import { signClearText } from "../helpers/crypto";
 import { createPost } from "../api/posts";
 import { publishSignature } from "../api/dht";
+import { signClearText } from "../helpers/crypto";
 
 export default {
     computed: {
-        state() {
-            return (
-                this.form.signingPassphrase.length >= 4 &&
-                this.form.postContent.length >= 1
-            );
+        postContentState() {
+            return this.form.postContent.length >= 1;
+        },
+        signingPassphraseState() {
+            return this.form.signingPassphrase.length >= 4;
         },
         postContentInvalid() {
             if (this.form.postContent.length > 1) {
@@ -98,36 +100,41 @@ export default {
             }
         },
         signingPassphraseValid() {
-            return this.state === true
+            return this.signingPassphraseState === true
                 ? "Your private key will remain on the client"
                 : "";
+        },
+        currentSignature() {
+            this.generateSignaturePreview();
+            return this.signature;
         }
     },
     methods: {
-        previewSignature(evt) {
-            evt.preventDefault();
-
-            signClearText(
-                this.form.postContent,
-                this.form.signingPassphrase
-            ).then(signature => (this.signature = signature));
+        generateSignaturePreview() {
+            if (this.signingPassphraseState === true) {
+                signClearText(
+                    this.form.postContent,
+                    this.$store.getters.privateKeyArmored,
+                    this.form.signingPassphrase
+                ).then(signature => (this.signature = signature));
+            } else this.signature = "";
         },
-        async signAndPost(evt) {
+        signAndPost(evt) {
             evt.preventDefault();
-
-            let signatureKey;
 
             if (this.form.signingPassphrase.length > 0) {
-                await signClearText(
+                signClearText(
                     this.form.postContent,
+                    this.$store.getters.privateKeyArmored,
                     this.form.signingPassphrase
                 )
-                    .then(signature => (this.signature = signature))
                     .then(publishSignature)
-                    .then(key => (signatureKey = key));
-            }
+                    .then(dhtResponse => dhtResponse.key)
+                    .then(signatureKey =>
+                        createPost(this.form.postContent, signatureKey)
+                    );
+            } else createPost(this.form.postContent, null);
 
-            createPost(this.form.postContent, signatureKey);
             this.$emit("closeModal");
         }
     },
@@ -146,5 +153,11 @@ export default {
 <style scoped>
 #signing-passphrase-input.is-invalid {
     border-color: orange;
+}
+
+#post-signature-preview {
+    margin-top: 10px;
+    margin-left: 5px;
+    margin-right: 5px;
 }
 </style>

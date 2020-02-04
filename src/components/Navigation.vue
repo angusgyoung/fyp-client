@@ -11,19 +11,22 @@
                     <b-nav-item href="/feed">Feed</b-nav-item>
                 </b-navbar-nav>
 
-                <!-- Right aligned nav items -->
                 <b-navbar-nav class="ml-auto">
                     <div v-if="isLoggedIn">
                         <b-nav-item-dropdown right>
                             <template v-slot:button-content>
-                                {{
-                                currentUser.username
-                                }}
+                                {{ currentUser.username }}
                             </template>
                             <b-dropdown-item
                                 v-bind:href="`/profile/${currentUser.username}`"
-                            >Profile</b-dropdown-item>
-                            <b-dropdown-item @click="logout">Log Out</b-dropdown-item>
+                                >Profile</b-dropdown-item
+                            >
+                            <b-dropdown-item v-bind:href="'/keys'"
+                                >Keys</b-dropdown-item
+                            >
+                            <b-dropdown-item @click="logout"
+                                >Log Out</b-dropdown-item
+                            >
                         </b-nav-item-dropdown>
                     </div>
 
@@ -32,12 +35,14 @@
                             size="sm"
                             variant="outline-success"
                             @click="$router.push('/login')"
-                        >Login</b-button>
+                            >Login</b-button
+                        >
                         <b-button
                             size="sm"
                             variant="outline-info"
                             @click="$router.push('/register')"
-                        >Register</b-button>
+                            >Register</b-button
+                        >
                     </div>
                 </b-navbar-nav>
             </b-collapse>

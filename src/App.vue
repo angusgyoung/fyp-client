@@ -28,6 +28,21 @@ export default {
     background-color: var(--bg-color);
 }
 
+.isys-card {
+    -webkit-box-shadow: 5px 5px 5px -1px rgba(0, 0, 0, 0.1);
+    -moz-box-shadow: 5px 5px 5px -1px rgba(0, 0, 0, 0.1);
+    box-shadow: 5px 5px 5px -1px rgba(0, 0, 0, 0.1);
+    border-radius: 0;
+}
+
+.code-format-card {
+    font-family: "Courier New", Courier, monospace;
+    font-size: 10px;
+    background-color: rgb(66, 66, 66);
+    color: white;
+    border-radius: 0;
+}
+
 .btn {
     border-radius: 0 !important;
 }

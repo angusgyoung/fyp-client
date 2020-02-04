@@ -3,7 +3,11 @@
         <b-row>
             <b-col class="col-md-4 offset-md-4">
                 <b-form @submit.prevent="login" @reset="onReset" v-if="show">
-                    <b-form-group id="input-group-1" label="Email address:" label-for="input-1">
+                    <b-form-group
+                        id="input-group-1"
+                        label="Email address:"
+                        label-for="input-1"
+                    >
                         <b-form-input
                             id="input-1"
                             v-model="form.username"
@@ -12,7 +16,11 @@
                             placeholder="Enter email"
                         ></b-form-input>
                     </b-form-group>
-                    <b-form-group id="input-group-2" label="Password:" label-for="input-2">
+                    <b-form-group
+                        id="input-group-2"
+                        label="Password:"
+                        label-for="input-2"
+                    >
                         <b-form-input
                             id="input-2"
                             v-model="form.password"
@@ -34,8 +42,8 @@ export default {
     data() {
         return {
             form: {
-                username: '',
-                password: ''
+                username: "",
+                password: ""
             },
             show: true
         };
@@ -44,7 +52,7 @@ export default {
         onReset(evt) {
             evt.preventDefault();
             // Reset our form values
-            this.form.username = '';
+            this.form.username = "";
             // Trick to reset/clear native browser form validation state
             this.show = false;
             this.$nextTick(() => {
@@ -53,9 +61,9 @@ export default {
         },
         login() {
             this.$store
-                .dispatch('login', this.form)
-                .then(() => this.$router.push('/'))
-                .catch(() => this.$router.push('/error'));
+                .dispatch("login", this.form)
+                .then(() => this.$router.push("/"))
+                .catch(() => this.$router.push("/error"));
         }
     }
 };

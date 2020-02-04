@@ -8,7 +8,10 @@
     >
         <b-container id="home-text-container">
             <h1>Welcome to I Said You Said</h1>
-            <h4 v-if="isLoggedIn">Set up your keys before creating content</h4>
+            <h3 v-if="isLoggedIn">
+                <router-link to="/keys">Set up your keys</router-link> before
+                creating content</h3
+            >
             <h4 v-else>
                 Please
                 <router-link to="/login">sign in</router-link> to view the feed
@@ -31,6 +34,8 @@ export default {
 #home {
     text-align: center;
     height: 100vh;
+    background-size: cover;
+    background-repeat: no-repeat;
 }
 #home-text-container {
     padding-top: 20%;

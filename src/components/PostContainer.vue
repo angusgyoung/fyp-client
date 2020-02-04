@@ -1,13 +1,15 @@
 <template>
-    <Card class="post-container-card">
+    <b-card class="post-container-card isys-card">
         <div>
             <b-row>
                 <b-col>
-                    <a v-bind:href="`/profile/${post.username}`">{{ post.username }}</a>
+                    <a v-bind:href="`/profile/${post.username}`">{{
+                        post.username
+                    }}</a>
                 </b-col>
-                <b-col
-                    class="text-right text-muted"
-                >{{ post.timestamp | moment('h:mm a · MMM D YYYY') }}</b-col>
+                <b-col class="text-right text-muted">{{
+                    post.timestamp | moment("h:mm a · MMM D YYYY")
+                }}</b-col>
             </b-row>
         </div>
         <b-card-text>{{ post.content }}</b-card-text>
@@ -21,25 +23,33 @@
                         v-b-toggle="`post-signature-collapse-${post.id}`"
                         size="sm"
                         variant="outline-success"
-                    >Verify</b-button>
+                        >Verify</b-button
+                    >
                 </b-col>
             </b-row>
             <b-collapse class="mt-2" :id="`post-signature-collapse-${post.id}`">
-                <b-card>Loading...</b-card>
+                <b-card class="code-format-card">{{ postSignature }}</b-card>
             </b-collapse>
         </b-card-sub-title>
-    </Card>
+    </b-card>
 </template>
 
 <script>
-import Card from "./Card.vue";
+import { getSingature } from "../api/dht";
 
 export default {
-    components: {
-        Card
-    },
     props: {
         post: Object
+    },
+    data() {
+        return {
+            postSignature: "Loading..."
+        };
+    },
+    mounted() {
+        getSingature(this.post.signatureKey).then(res => {
+            this.postSignature = res.data.value;
+        });
     }
 };
 </script>

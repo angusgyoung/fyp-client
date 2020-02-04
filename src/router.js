@@ -1,24 +1,33 @@
-import Vue from 'vue';
+import Vue from "vue";
 
-import Home from './pages/Home.vue';
-import Login from './pages/Login.vue';
-import Register from './pages/Register.vue';
-import Feed from './pages/Feed.vue';
+import Home from "./pages/Home.vue";
+import Login from "./pages/Login.vue";
+import Register from "./pages/Register.vue";
+import Feed from "./pages/Feed.vue";
+import Keys from "./pages/Keys.vue";
 
-import store from './api/store.js';
-import VueRouter from 'vue-router';
+import store from "./state/store.js";
+import VueRouter from "vue-router";
 
 Vue.use(VueRouter);
 
 const routes = [
-    { path: '/', name: 'home', component: Home },
-    { path: '/home', name: 'home', component: Home },
-    { path: '/login', name: 'login', component: Login },
-    { path: '/register', name: 'register', component: Register },
+    { path: "/", name: "home", component: Home },
+    { path: "/home", name: "home", component: Home },
+    { path: "/login", name: "login", component: Login },
+    { path: "/register", name: "register", component: Register },
     {
-        path: '/feed',
-        name: 'feed',
+        path: "/feed",
+        name: "feed",
         component: Feed,
+        meta: {
+            requiresAuth: true
+        }
+    },
+    {
+        path: "/keys",
+        name: "keys",
+        component: Keys,
         meta: {
             requiresAuth: true
         }
@@ -26,7 +35,7 @@ const routes = [
 ];
 
 const router = new VueRouter({
-    mode: 'history',
+    mode: "history",
     routes
 });
 
@@ -36,7 +45,7 @@ router.beforeEach((to, from, next) => {
             next();
             return;
         }
-        next('/login');
+        next("/login");
     } else {
         next();
     }

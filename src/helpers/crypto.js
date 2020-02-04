@@ -1,4 +1,4 @@
-import * as openpgp from 'openpgp'
+import * as openpgp from "openpgp";
 
 const keypairLocalStorageKey = "keypair";
 
@@ -10,44 +10,59 @@ const generateKeyPair = (email, passphrase) => {
     };
 
     return openpgp.generateKey(options).then(keyPair => keyPair);
-}
+};
 
-const signClearText = async (content, passphrase) => {
-    let armouredPrivateKey = getKeypairFromLocalStorage().privateKeyArmored;
-
-    const privateKey = (await openpgp.key.readArmored(armouredPrivateKey)).keys[0];
-    await privateKey.decrypt(passphrase);
-
-    const options = {
-        message: openpgp.cleartext.fromText(content),
-        privateKeys: [privateKey],
-        detached: true
-    };
-
-    return await openpgp.sign(options).then(signed => signed.signature);
-}
+const signClearText = (content, armouredPrivateKey, passphrase) => {
+    return openpgp.key
+        .readArmored(armouredPrivateKey)
+        .then(keyset => keyset.keys[0])
+        .then(encryptedPrivateKey => {
+            return new Promise((resolve, reject) => {
+                encryptedPrivateKey
+                    .decrypt(passphrase)
+                    .then(decryptSuccessful => {
+                        if (decryptSuccessful) {
+                            resolve(encryptedPrivateKey);
+                        } else
+                            reject(
+                                "Passphrase could not be used to decrypt the private key"
+                            );
+                    });
+            });
+        })
+        .then(privateKey => {
+            const options = {
+                message: openpgp.cleartext.fromText(content),
+                privateKeys: [privateKey],
+                detached: true
+            };
+            return openpgp.sign(options);
+        })
+        .then(signed => signed.signature);
+};
 
 const verifyClearText = async (message, signature, publicKey) => {
     const options = {
         message: openpgp.cleartext.fromText(message),
         signature: await openpgp.readArmored(signature),
         publicKeys: (await openpgp.readArmored(publicKey)).keys
-    }
+    };
 
     return await openpgp.verify(options).then(verified => verified);
-}
+};
 
 const getKeypairFromLocalStorage = () => {
     return JSON.parse(localStorage.getItem(keypairLocalStorageKey));
-}
+};
 
-const setKeypairInLocalStorage = (keypair) => {
+const setKeypairInLocalStorage = keypair => {
     localStorage.setItem(keypairLocalStorageKey, JSON.stringify(keypair));
-}
+};
 
 export {
     generateKeyPair,
     signClearText,
     verifyClearText,
-    setKeypairInLocalStorage
-}
+    setKeypairInLocalStorage,
+    getKeypairFromLocalStorage
+};
