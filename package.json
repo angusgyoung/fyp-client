@@ -14,6 +14,7 @@
         "core-js": "^3.4.4",
         "js-cookie": "^2.2.1",
         "moment": "^2.24.0",
+        "openpgp": "^4.9.0",
         "vee-validate": "^3.2.1",
         "vue": "^2.6.11",
         "vue-moment": "^4.1.0",
