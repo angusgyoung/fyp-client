@@ -27,8 +27,20 @@ export default {
                 commit("set_keypair", keypair);
             });
         },
-        removeKeypair({ commit }, user) {
-            localStorage.removeItem(user.id);
+        readKeypair({ commit }, user) {
+            let keypairString = localStorage.getItem(user.id);
+            if (keypairString) {
+                commit("set_keypair", JSON.parse(keypairString));
+            }
+        },
+        // just removes the current keypair from state, not
+        // local storage
+        removeKeypair({ commit }) {
+            commit("remove_keypair");
+        },
+        revokeKeypair({ commit }, currentUser) {
+            localStorage.removeItem(currentUser.user.id);
+            // make call to PKS with revokation key here
             commit("remove_keypair");
         }
     },

@@ -9,14 +9,10 @@
                             from storage. This will cause any content signed
                             with these keys to fail verification.
                         </b-card-body>
-                        <b-button @click="revokeKeyPair"
-                            >Revoke Keypair</b-button
-                        >
+                        <b-button @click="revokeKeyPair">Revoke Keypair</b-button>
                     </div>
                     <div v-else>
-                        <b-card-title
-                            >No Keypair in Application Storage</b-card-title
-                        >
+                        <b-card-title>No Keypair in Application Storage</b-card-title>
                         <b-card-body>
                             To sign posts, you must have a public and private
                             key. Your public key must also be associated with
@@ -25,9 +21,7 @@
                             and paste your public key and encrypted private key
                             below.
                         </b-card-body>
-                        <b-button @click="generateNewKeyPair"
-                            >Generate new Keypair</b-button
-                        >
+                        <b-button @click="generateNewKeyPair">Generate new Keypair</b-button>
                     </div>
                 </b-card>
             </b-col>
@@ -35,17 +29,21 @@
                 <b-card class="isys-card">
                     <b-card class="code-format-card mb-4">
                         <b-card-title>Public Key</b-card-title>
-                        <b-card-body class="key-preview" v-if="hasKeys">{{
+                        <b-card-body class="key-preview" v-if="hasKeys">
+                            {{
                             publicKeyArmored
-                        }}</b-card-body>
+                            }}
+                        </b-card-body>
                         <b-card-body v-else>No key</b-card-body>
                     </b-card>
 
                     <b-card class="code-format-card">
                         <b-card-title>Private Key</b-card-title>
-                        <b-card-body class="key-preview" v-if="hasKeys">{{
+                        <b-card-body class="key-preview" v-if="hasKeys">
+                            {{
                             privateKeyArmored
-                        }}</b-card-body>
+                            }}
+                        </b-card-body>
                         <b-card-body v-else>No key</b-card-body>
                     </b-card>
                 </b-card>
@@ -78,7 +76,9 @@ export default {
             });
         },
         revokeKeyPair() {
-            this.$store.dispatch("removeKeypair", { user: this.currentUser });
+            this.$store.dispatch("revokeKeypair", {
+                user: this.currentUser
+            });
         }
     }
 };

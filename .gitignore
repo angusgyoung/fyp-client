@@ -2,6 +2,7 @@
 .vscode/
 .env
 **.prettierrc
+**dist/
 
 # Logs
 logs
