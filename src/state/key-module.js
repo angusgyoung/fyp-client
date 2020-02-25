@@ -1,4 +1,5 @@
 import * as openpgp from "openpgp";
+import {publishPublicKey} from "../api/pks";
 
 export default {
     state: {
@@ -23,6 +24,8 @@ export default {
             return openpgp.generateKey(options).then(keypair => {
                 // keypair will be saved in local storage with the id
                 // of the user as the key
+                console.log(keypair);
+                publishPublicKey(user.username, keypair.publicKeyArmored);
                 localStorage.setItem(user.id, JSON.stringify(keypair));
                 commit("set_keypair", keypair);
             });
