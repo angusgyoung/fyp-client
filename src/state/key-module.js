@@ -1,5 +1,5 @@
 import * as openpgp from "openpgp";
-import {publishPublicKey} from "../api/pks";
+import {publishPublicKey, revokePublicKey} from "../api/pks";
 
 export default {
     state: {
@@ -42,8 +42,8 @@ export default {
             commit("remove_keypair");
         },
         revokeKeypair({ commit }, currentUser) {
+            revokePublicKey(currentUser.user.username);
             localStorage.removeItem(currentUser.user.id);
-            // make call to PKS with revokation key here
             commit("remove_keypair");
         }
     },

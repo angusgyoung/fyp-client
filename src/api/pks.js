@@ -34,4 +34,16 @@ const publishPublicKey = (email, key) => {
     });
 };
 
-export { getPublicKeyForEmail, publishPublicKey };
+const revokePublicKey = (email) =>  {
+    return new Promise((resolve, reject) => {
+        axios(`${PKS_URL}/api/v1/key`, {
+            method: "DELETE",
+            params: {
+                email
+            }
+        }).then(res => resolve(res.data))
+            .catch(err => reject(err));
+    });
+};
+
+export { getPublicKeyForEmail, publishPublicKey, revokePublicKey };
