@@ -34,7 +34,7 @@
             </b-row>
             <b-collapse class="mt-2" :id="`post-signature-collapse-${post.id}`">
                 <p>{{ verificationStateMessage }}</p>
-                <b-card class="code-format-card">{{ postSignature }}</b-card>
+                <b-card v-if="this.postSignature" class="code-format-card">{{ postSignature }}</b-card>
             </b-collapse>
         </b-card-sub-title>
     </b-card>
@@ -78,30 +78,45 @@
             }
         },
         mounted() {
-            getSingature(this.post.signatureKey).then(res => {
-                this.postSignature = res.data.value;
-            });
+            if (this.post.signatureKey) {
 
-            getPublicKeyForEmail(this.post.username)
-                .then(publicKey => {
-                    verifyClearText(this.post.content, this.postSignature, publicKey)
-                        .then(valid => {
-                            if (valid) {
-                                this.verificationStateMessage = "Verified";
-                                this.verificationState = "success";
-                            } else {
-                                this.verificationStateMessage = "Unverified";
+                getSingature(this.post.signatureKey).then(res => {
+                    this.postSignature = res.data.value;
+
+                    getPublicKeyForEmail(this.post.username)
+                        .then(publicKey => {
+                            verifyClearText(this.post.content, this.postSignature, publicKey)
+                                .then(valid => {
+                                    if (valid) {
+                                        this.verificationStateMessage = "Verified";
+                                        this.verificationState = "success";
+                                    } else {
+                                        this.verificationStateMessage = "Unverified";
+                                        this.verificationState = "failed";
+                                    }
+                                }).catch(err => {
+                                console.error(err);
+                                this.verificationStateMessage = `Verification Failed: ${err.message}`;
                                 this.verificationState = "failed";
-                            }
+                            });
                         }).catch(err => {
-                        console.error(err);
-                        this.verificationStateMessage = `Verification Failed: ${err.message}`;
+                        this.verificationStateMessage = `Failed to retrieve public key: ${err.message}`;
                         this.verificationState = "failed";
                     });
                 }).catch(err => {
-                this.verificationStateMessage = `Failed to retrieve public key: ${err.message}`;
+                    this.verificationStateMessage = `Failed to retrieve post signature: ${err.message}`;
+                    this.verificationState = "failed";
+                    this.postSignature = null;
+                });
+
+
+            } else {
+                // Post has no signature key, so don't try and verify it
+                this.post.signatureKey = "No signature was provided";
+                this.verificationStateMessage = "";
                 this.verificationState = "failed";
-            });
+                this.postSignature = null;
+            }
         }
     };
 </script>

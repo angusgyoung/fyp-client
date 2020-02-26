@@ -63,7 +63,22 @@ export default {
             this.$store
                 .dispatch("login", this.form)
                 .then(() => this.$router.push("/"))
-                .catch(() => this.$router.push("/error"));
+                .catch(err => {
+                    let errorMessage = '';
+                    if (err.response && err.response.status) {
+                        if (err.response.status === 401) {
+                            errorMessage = 'Invalid credentials';
+                        } else errorMessage = 'Something went wrong, please try again';
+                    } else throw err;
+                    this.$swal.fire({
+                        title: 'Login Failed',
+                        text: errorMessage,
+                        icon: 'error',
+                        timer: 3000,
+                        confirmButtonText: 'Ok'
+                    });
+                    this.form.password = '';
+                });
         }
     }
 };

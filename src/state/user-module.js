@@ -63,7 +63,7 @@ export default {
                     method: "POST"
                 })
                     .then(res => {
-                        parseAuthResponse(res);
+                        parseAuthResponse(res, commit);
                         resolve(res);
                     })
                     .catch(err => {

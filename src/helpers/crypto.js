@@ -25,7 +25,7 @@ const signClearText = (content, armouredPrivateKey, passphrase) => {
                             reject(
                                 "Passphrase could not be used to decrypt the private key"
                             );
-                    });
+                    }).catch(err => reject(err));
             });
         })
         .then(privateKey => {
@@ -36,7 +36,7 @@ const signClearText = (content, armouredPrivateKey, passphrase) => {
             };
             return openpgp.sign(options);
         })
-        .then(signed => signed.signature);
+        .then(signed => signed.signature)
 };
 
 const verifyClearText = async (message, signature, publicKey) => {

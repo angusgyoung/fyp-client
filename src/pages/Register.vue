@@ -70,7 +70,17 @@ export default {
             this.$store
                 .dispatch("register", this.form)
                 .then(() => this.$router.push("/"))
-                .catch(() => this.$router.push("/error"));
+                .catch(err => {
+                    console.log(err);
+                    if (err.response && err.response.status === 400) {
+                        this.$swal.fire({
+                            title: 'Failed to register new user',
+                            icon: 'error',
+                            timer: 3000,
+                            confirmButtonText: 'Ok'
+                        });
+                    } else throw err;
+                });
         }
     }
 };
