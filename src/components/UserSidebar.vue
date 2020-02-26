@@ -1,5 +1,5 @@
 <template>
-    <b-card class="isys-card" img-src="https://picsum.photos/400/400">
+    <b-card class="isys-card" :img-src="currentUser.profileImageUrl">
         <b-card-title>{{ currentUser.username }}</b-card-title>
         <b-card-sub-title class="text-muted"
             >Account Created
