@@ -9,9 +9,11 @@ import "bootstrap-vue/dist/bootstrap-vue.css";
 import App from "./App.vue";
 import store from "./state/store";
 import router from "./router.js";
+import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
 
 Vue.config.productionTip = false;
 
+Vue.component('font-awesome-icon', FontAwesomeIcon)
 Vue.use(BootstrapVue);
 Vue.use(VueMoment);
 

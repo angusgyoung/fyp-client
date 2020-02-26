@@ -1,10 +1,8 @@
 import * as openpgp from "openpgp";
 
-const keypairLocalStorageKey = "keypair";
-
 const generateKeyPair = (email, passphrase) => {
     const options = {
-        userIds: [{ name: email, email: email }],
+        userIds: [{name: email, email: email}],
         rsaBits: 4096,
         passphrase: passphrase
     };
@@ -42,27 +40,30 @@ const signClearText = (content, armouredPrivateKey, passphrase) => {
 };
 
 const verifyClearText = async (message, signature, publicKey) => {
-    const options = {
-        message: openpgp.cleartext.fromText(message),
-        signature: await openpgp.readArmored(signature),
-        publicKeys: (await openpgp.readArmored(publicKey)).keys
-    };
-
-    return await openpgp.verify(options).then(verified => verified);
-};
-
-const getKeypairFromLocalStorage = () => {
-    return JSON.parse(localStorage.getItem(keypairLocalStorageKey));
-};
-
-const setKeypairInLocalStorage = keypair => {
-    localStorage.setItem(keypairLocalStorageKey, JSON.stringify(keypair));
+    return new Promise((resolve, reject) => {
+        return Promise.all([
+            openpgp.signature.readArmored(signature),
+            openpgp.key.readArmored(publicKey.publicKeyArmored)
+        ])
+            .then(([armoredSignature, armoredPublicKeys]) => {
+                const options = {
+                    message: openpgp.cleartext.fromText(message),
+                    signature: armoredSignature,
+                    publicKeys: armoredPublicKeys.keys
+                };
+                return openpgp.verify(options);
+            }).then(result => {
+                let {valid} = result.signatures[0];
+                if (valid != null) resolve(valid);
+                else reject(new Error('Content could not be verified'));
+            }).catch(err => {
+                return reject(err);
+            });
+    });
 };
 
 export {
     generateKeyPair,
     signClearText,
-    verifyClearText,
-    setKeypairInLocalStorage,
-    getKeypairFromLocalStorage
+    verifyClearText
 };

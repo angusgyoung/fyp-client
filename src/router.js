@@ -5,6 +5,7 @@ import Login from "./pages/Login.vue";
 import Register from "./pages/Register.vue";
 import Feed from "./pages/Feed.vue";
 import Keys from "./pages/Keys.vue";
+import Profile from "./pages/Profile";
 
 import store from "./state/store.js";
 import VueRouter from "vue-router";
@@ -31,6 +32,11 @@ const routes = [
         meta: {
             requiresAuth: true
         }
+    },
+    {
+        path: "/profile/:username",
+        name: "Profile",
+        component: Profile
     }
 ];
 

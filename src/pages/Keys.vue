@@ -21,7 +21,22 @@
                             and paste your public key and encrypted private key
                             below.
                         </b-card-body>
-                        <b-button @click="generateNewKeyPair">Generate new Keypair</b-button>
+                        <b-form-group
+                                id="passphrase-input-group"
+                                label-for="passphrase-input-group"
+                                :invalid-feedback="passphraseInvalidFeedback"
+                                :state="passphraseState"
+                        >
+                            <b-input-group prepend="Passphrase" class="my-3">
+                                <b-form-input
+                                        id="passphrase-input-group"
+                                        type="password"
+                                        v-model="privateKeyPassphrase"
+                                        :state="passphraseState"
+                                ></b-form-input>
+                            </b-input-group>
+                        </b-form-group>
+                        <b-button block @click="generateNewKeyPair">Generate new Keypair</b-button>
                     </div>
                 </b-card>
             </b-col>
@@ -53,41 +68,59 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+    import {mapGetters} from "vuex";
 
-export default {
-    computed: {
-        ...mapGetters([
-            "currentUser",
-            "hasKeypair",
-            "publicKeyArmored",
-            "privateKeyArmored"
-        ]),
-        hasKeys() {
-            return this.hasKeypair;
-        }
-    },
-    methods: {
-        generateNewKeyPair() {
-            // hard code key passphrase for now
-            return this.$store.dispatch("generateKeypair", {
-                user: this.currentUser,
-                passphrase: "pass"
-            });
+    export default {
+        data() {
+            return {
+                privateKeyPassphrase: ''
+            }
         },
-        revokeKeyPair() {
-            this.$store.dispatch("revokeKeypair", {
-                user: this.currentUser
-            });
+        computed: {
+            ...mapGetters([
+                "currentUser",
+                "hasKeypair",
+                "publicKeyArmored",
+                "privateKeyArmored"
+            ]),
+            hasKeys() {
+                return this.hasKeypair;
+            },
+            passphraseState() {
+                return this.privateKeyPassphrase.length > 6;
+            },
+            passphraseInvalidFeedback() {
+                if (this.privateKeyPassphrase.length > 6) {
+                    return "";
+                } else if (this.privateKeyPassphrase.length > 0) {
+                    return "Passphrase must be at least 6 characters";
+                } else {
+                    return "Please enter a passphrase";
+                }
+            }
+        },
+        methods: {
+            generateNewKeyPair() {
+                if (this.passphraseState) {
+                    return this.$store.dispatch("generateKeypair", {
+                        user: this.currentUser,
+                        passphrase: this.privateKeyPassphrase
+                    });
+                }
+            },
+            revokeKeyPair() {
+                this.$store.dispatch("revokeKeypair", {
+                    user: this.currentUser
+                });
+            }
         }
-    }
-};
+    };
 </script>
 
 <style scoped>
-.key-preview {
-    max-height: 150px;
-    overflow: scroll;
-    overflow-x: hidden;
-}
+    .key-preview {
+        max-height: 150px;
+        overflow: scroll;
+        overflow-x: hidden;
+    }
 </style>
