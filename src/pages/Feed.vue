@@ -5,7 +5,7 @@
                 <UserSidebar />
             </b-col>
             <b-col>
-                <PostList v-bind:posts="posts" />
+                <PostList/>
             </b-col>
         </b-row>
     </b-container>
@@ -14,21 +14,12 @@
 <script>
 import PostList from "../components/PostList";
 import UserSidebar from "../components/UserSidebar";
-import { getPosts } from "../api/posts";
 
 export default {
     components: {
         PostList,
         UserSidebar
     },
-    data() {
-        return {
-            posts: []
-        };
-    },
-    mounted() {
-        getPosts().then(data => (this.posts = data.content));
-    }
 };
 </script>
 

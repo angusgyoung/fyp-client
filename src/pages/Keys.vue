@@ -110,7 +110,6 @@
                             title: 'Created new Keypair',
                             text: 'An email will be sent to the address associated with this key to confirm ownership',
                             icon: 'success',
-                            timer: 2000,
                             confirmButtonText: 'Ok'
                         });
                     }).catch(() => {

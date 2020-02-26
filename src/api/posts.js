@@ -2,18 +2,10 @@ import axios from "axios";
 
 const API_URL = "http://localhost:8008/api/v1/isys";
 
-const getPosts = (page = 0) => {
+const getPosts = (page = 0, username) => {
+    let query = (username) ? `username=${username}&page=${page}&size=10` :`page=${page}&size=10`;
     return new Promise((resolve, reject) => {
-        axios(`${API_URL}/posts?page=${page}&size=10`, {
-            method: "GET"
-        }).then(res => resolve(res.data))
-            .catch(err => reject(err));
-    });
-};
-
-const getPostsForUser = async (username, page = 0) => {
-    return new Promise((resolve, reject) => {
-        axios(`${API_URL}/posts?username=${username}&page=${page}&size=10`, {
+        axios(`${API_URL}/posts?${query}`, {
             method: "GET"
         }).then(res => resolve(res.data))
             .catch(err => reject(err));
@@ -33,4 +25,4 @@ const createPost = async (post, signatureKey) => {
     });
 };
 
-export {getPosts, getPostsForUser, createPost};
+export {getPosts, createPost};

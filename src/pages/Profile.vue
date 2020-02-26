@@ -1,31 +1,61 @@
 <template>
-    <div>
-        <h2>Public Key</h2>
-        <p>{{ this.publicKey }}</p>
-    </div>
+    <b-container class="my-3">
+        <b-row class="my-3">
+            <b-col class="col-md-6 mb-3">
+                <UserOverview :user="user" class="h-100"/>
+            </b-col>
+            <b-col class="col-md-6 mb-3">
+                <b-card class="code-format-card">
+                    <b-card-title>Public Key</b-card-title>
+                    <b-card-body class="key-preview">
+                        {{ this.publicKey }}
+                    </b-card-body>
+                </b-card>
+            </b-col>
+        </b-row>
+        <PostList :username="user.username"/>
+    </b-container>
 </template>
 
 <script>
     import {getPublicKeyForEmail} from "../api/pks";
+    import {getUser} from "../api/user";
+
+    import UserOverview from "../components/UserOverview";
+    import PostList from "../components/PostList";
 
     export default {
         name: "Profile",
+        components: {
+            UserOverview,
+            PostList
+        },
         data() {
             return {
-                profile: null,
+                user: null,
                 publicKey: 'Loading...'
             }
         },
         mounted() {
-            getPublicKeyForEmail(this.$route.params.username)
-                .then(res => this.publicKey = res.publicKeyArmored)
-                .catch(err => {
-                    this.publicKey = `Error:  ${err.message}`;
-                    console.log(err);
-                });
+            getUser(this.$route.params.username).then(res => {
+                this.user = res;
+
+                getPublicKeyForEmail(this.user.username)
+                    .then(res => this.publicKey = res.publicKeyArmored)
+                    .catch(err => {
+                        this.publicKey = `Error:  ${err.message}`;
+                        console.log(err);
+                    });
+            });
+
         }
     }
 </script>
 
 <style scoped>
+    .key-preview {
+        max-height: 450px;
+        overflow: scroll;
+        overflow-x: hidden;
+    }
 </style>
