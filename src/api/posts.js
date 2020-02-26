@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = "http://localhost:8008/api/v1/isys";
+const API_URL = process.env.VUE_APP_API_URL || "http://localhost:8008/api/v1/isys";
 
 const getPosts = (page = 0, username) => {
     let query = (username) ? `username=${username}&page=${page}&size=10` :`page=${page}&size=10`;

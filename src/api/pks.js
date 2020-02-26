@@ -1,6 +1,6 @@
 import axios from "axios"
 
-const PKS_URL = process.env.PKS_URL  || "http://localhost:8888";
+const PKS_URL = process.env.VUE_APP_PKS_URL  || "http://localhost:8888";
 
 const getPublicKeyForEmail = (email) => {
         return new Promise((resolve, reject) => {

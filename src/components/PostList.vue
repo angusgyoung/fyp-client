@@ -18,7 +18,8 @@ export default {
         InfiniteLoading
     },
     props: {
-        username: String
+        username: String,
+        subscription: String
     },
     data() {
         return {
