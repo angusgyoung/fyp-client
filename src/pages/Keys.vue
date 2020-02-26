@@ -102,15 +102,44 @@
         methods: {
             generateNewKeyPair() {
                 if (this.passphraseState) {
-                    return this.$store.dispatch("generateKeypair", {
+                    this.$store.dispatch("generateKeypair", {
                         user: this.currentUser,
                         passphrase: this.privateKeyPassphrase
+                    }).then(() => {
+                        this.$swal.fire({
+                            title: 'Created new Keypair',
+                            text: 'An email will be sent to the address associated with this key to confirm ownership',
+                            icon: 'success',
+                            timer: 2000,
+                            confirmButtonText: 'Ok'
+                        });
+                    }).catch(() => {
+                        this.$swal.fire({
+                            title: 'Failed to Create Keypair',
+                            text: 'Please try again',
+                            icon: 'error',
+                            confirmButtonText: 'Ok'
+                        });
                     });
                 }
             },
             revokeKeyPair() {
                 this.$store.dispatch("revokeKeypair", {
                     user: this.currentUser
+                }).then(() => {
+                    this.$swal.fire({
+                        title: 'Submitted Revocation Request',
+                        text: 'An email will be sent to the address associated with this key to confirm removal',
+                        icon: 'success',
+                        confirmButtonText: 'Ok'
+                    });
+                }).catch(() => {
+                    this.$swal.fire({
+                        title: 'Failed to Revoke Keypair',
+                        text: 'Please try again',
+                        icon: 'error',
+                        confirmButtonText: 'Ok'
+                    });
                 });
             }
         }

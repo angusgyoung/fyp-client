@@ -14,9 +14,9 @@ export default {
         }
     },
     actions: {
-        generateKeypair({ commit }, { user, passphrase }) {
+        generateKeypair({commit}, {user, passphrase}) {
             const options = {
-                userIds: [{ email: user.username }],
+                userIds: [{email: user.username}],
                 rsaBits: 4096,
                 passphrase
             };
@@ -24,13 +24,16 @@ export default {
             return openpgp.generateKey(options).then(keypair => {
                 // keypair will be saved in local storage with the id
                 // of the user as the key
-                console.log(keypair);
-                publishPublicKey(user.username, keypair.publicKeyArmored);
-                localStorage.setItem(user.id, JSON.stringify(keypair));
-                commit("set_keypair", keypair);
+                return new Promise((resolve, reject) => {
+                    publishPublicKey(user.username, keypair.publicKeyArmored).then(() => {
+                        localStorage.setItem(user.id, JSON.stringify(keypair));
+                        commit("set_keypair", keypair);
+                        resolve();
+                    }).catch(err => reject(err));
+                })
             });
         },
-        readKeypair({ commit }, user) {
+        readKeypair({commit}, user) {
             let keypairString = localStorage.getItem(user.id);
             if (keypairString) {
                 commit("set_keypair", JSON.parse(keypairString));
@@ -38,13 +41,28 @@ export default {
         },
         // just removes the current keypair from state, not
         // local storage
-        removeKeypair({ commit }) {
+        removeKeypair({commit}) {
             commit("remove_keypair");
         },
-        revokeKeypair({ commit }, currentUser) {
-            revokePublicKey(currentUser.user.username);
-            localStorage.removeItem(currentUser.user.id);
-            commit("remove_keypair");
+        revokeKeypair({commit}, currentUser) {
+            return new Promise(((resolve, reject) => {
+                revokePublicKey(currentUser.user.username).then(() => {
+                    localStorage.removeItem(currentUser.user.id);
+                    commit("remove_keypair");
+                    resolve();
+                }).catch(err => {
+                    if (err.response && err.response.status === 404) {
+                        // PKS will respond with 404 if we try and revoke a key
+                        // that doesn't exist or hasn't been verified. In that case we don't need
+                        // to revoke the key and we can just continue
+                        localStorage.removeItem(currentUser.user.id);
+                        commit("remove_keypair");
+                        resolve();
+                    } else reject(err);
+                });
+
+            }));
+
         }
     },
     getters: {
