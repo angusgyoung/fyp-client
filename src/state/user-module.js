@@ -85,6 +85,7 @@ export default {
     },
     getters: {
         isLoggedIn: state => !!state.token,
+        token: state => state.token,
         authStatus: state => state.status,
         currentUser: state => state.user
     }

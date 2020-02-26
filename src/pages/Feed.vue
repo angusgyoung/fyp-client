@@ -5,7 +5,7 @@
                 <UserSidebar />
             </b-col>
             <b-col>
-                <PostList/>
+                <PostList :subscription="'/topic/posts'"/>
             </b-col>
         </b-row>
     </b-container>

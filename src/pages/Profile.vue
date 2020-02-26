@@ -13,7 +13,7 @@
                 </b-card>
             </b-col>
         </b-row>
-        <PostList :username="user.username"/>
+        <PostList :username="user.username" :subscription="userPostSubscription"/>
     </b-container>
 </template>
 
@@ -33,13 +33,14 @@
         data() {
             return {
                 user: null,
+                userPostSubscription: null,
                 publicKey: 'Loading...'
             }
         },
         mounted() {
             getUser(this.$route.params.username).then(res => {
                 this.user = res;
-
+                this.userPostSubscription = `/queue/${this.user.username}/posts`;
                 getPublicKeyForEmail(this.user.username)
                     .then(res => this.publicKey = res.publicKeyArmored)
                     .catch(err => {
