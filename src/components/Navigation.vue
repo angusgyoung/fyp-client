@@ -7,26 +7,19 @@
 
             <b-collapse id="nav-collapse" is-nav>
                 <b-navbar-nav>
-                    <b-nav-item href="/home">Home</b-nav-item>
-                    <b-nav-item href="/feed">Feed</b-nav-item>
+                    <b-nav-item @click="$router.push('/home')">Home</b-nav-item>
+                    <b-nav-item @click="$router.push('/Feed')">Feed</b-nav-item>
                 </b-navbar-nav>
 
                 <b-navbar-nav class="ml-auto">
                     <div v-if="isLoggedIn">
                         <b-nav-item-dropdown right>
-                            <template v-slot:button-content>
-                                {{ currentUser.username }}
-                            </template>
+                            <template v-slot:button-content>{{ currentUser.username }}</template>
                             <b-dropdown-item
-                                v-bind:href="`/profile/${currentUser.username}`"
-                                >Profile</b-dropdown-item
-                            >
-                            <b-dropdown-item v-bind:href="'/keys'"
-                                >Keys</b-dropdown-item
-                            >
-                            <b-dropdown-item @click="logout"
-                                >Log Out</b-dropdown-item
-                            >
+                                @click="$router.push(`/profile/${currentUser.username}`)"
+                            >Profile</b-dropdown-item>
+                            <b-dropdown-item @click="$router.push('/keys')">Keys</b-dropdown-item>
+                            <b-dropdown-item @click="logout">Log Out</b-dropdown-item>
                         </b-nav-item-dropdown>
                     </div>
 
@@ -35,14 +28,12 @@
                             size="sm"
                             variant="outline-success"
                             @click="$router.push('/login')"
-                            >Login</b-button
-                        >
+                        >Login</b-button>
                         <b-button
                             size="sm"
                             variant="outline-info"
                             @click="$router.push('/register')"
-                            >Register</b-button
-                        >
+                        >Register</b-button>
                     </div>
                 </b-navbar-nav>
             </b-collapse>
