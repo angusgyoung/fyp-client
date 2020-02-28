@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const AUTH_URL = "http://localhost:8008/api/v1/isys/auth";
+const API_URL = process.env.VUE_APP_API_URL || "http://localhost:8008/api/v1/isys";
 
 const parseAuthResponse = (res, commit) => {
     const token = res.data.jwtToken;
@@ -38,7 +38,7 @@ export default {
             return new Promise((resolve, reject) => {
                 commit("auth_request");
                 axios({
-                    url: `${AUTH_URL}`,
+                    url: `${API_URL}/auth`,
                     data: user,
                     method: "POST"
                 })
@@ -58,7 +58,7 @@ export default {
             return new Promise((resolve, reject) => {
                 commit("auth_request");
                 axios({
-                    url: `${AUTH_URL}/register`,
+                    url: `${API_URL}/auth/register`,
                     data: user,
                     method: "POST"
                 })
@@ -85,6 +85,7 @@ export default {
     },
     getters: {
         isLoggedIn: state => !!state.token,
+        token: state => state.token,
         authStatus: state => state.status,
         currentUser: state => state.user
     }

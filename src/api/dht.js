@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const DHT_URL = "http://localhost:3000";
+const DHT_URL = process.env.VUE_APP_DHT_NODE_URL || "http://localhost:3000";
 
 const publishSignature = postSignature => {
     return new Promise((resolve, reject) => {
