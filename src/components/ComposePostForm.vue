@@ -33,15 +33,16 @@
             </b-form-group>
 
             <b-row>
-                <b-col>
+                <b-col class="col-12 col-md-8">
                     <b-button class variant="outline-danger">Cancel</b-button>
                 </b-col>
-                <b-col class="col-sm-4">
+                <b-col class="col-6 col-md-4">
                     <b-button
-                        variant="outline-primary"
-                        v-b-toggle="'preview-signature-collapse'"
+                            class="ml-auto"
+                            variant="outline-primary"
+                            v-b-toggle="'preview-signature-collapse'"
                     >Preview Signature</b-button>
-                    <b-button type="submit" class="float-right" variant="primary">Post</b-button>
+                    <b-button type="submit" variant="primary">Post</b-button>
                 </b-col>
             </b-row>
 
@@ -62,6 +63,7 @@
 import { createPost } from "../api/posts";
 import { publishSignature } from "../api/dht";
 import { signClearText } from "../helpers/crypto";
+import {mapGetters} from "vuex";
 
 export default {
     computed: {
@@ -97,11 +99,12 @@ export default {
         currentSignature() {
             this.generateSignaturePreview();
             return this.signature;
-        }
+        },
+        ...mapGetters(["hasKeypair"])
     },
     methods: {
         generateSignaturePreview() {
-            if (this.signingPassphraseState === true) {
+            if (this.signingPassphraseState === true && this.hasKepair) {
                 signClearText(
                     this.form.postContent,
                     this.$store.getters.privateKeyArmored,
@@ -116,46 +119,33 @@ export default {
         },
         signAndPost(evt) {
             evt.preventDefault();
-
-            signClearText(
-                this.form.postContent,
-                this.$store.getters.privateKeyArmored,
-                this.form.signingPassphrase
-            )
-                .then(publishSignature)
-                .then(dhtResponse => dhtResponse.key)
-                .then(signatureKey =>
-                    createPost(this.form.postContent, signatureKey)
-                        .then(() => {
-                            this.displayConfirmation();
-                        })
-                        .catch(() => this.displayError())
-                )
-                .catch(() => {
-                    this.$swal
-                        .fire({
-                            title: "Confirmation",
-                            text:
-                                "Something went wrong while creating the post signature. Creating the post without " +
-                                "a signature will prevent others from verifying its integrity.",
-                            icon: "question",
-                            confirmButtonText: "Post Anyway",
-                            showCancelButton: true,
-                            cancelButtonText: "Retry"
-                        })
-                        .then(result => {
-                            if (result.value) {
-                                createPost(this.form.postContent, null)
-                                    .then(() => {
-                                        this.displayConfirmation();
-                                    })
-                                    .catch(() => {
-                                        this.displayError();
-                                    });
-                            }
+            if (this.postContentState === true) {
+                if (this.signingPassphraseState === true && this.hasKepair) {
+                    signClearText(
+                        this.form.postContent,
+                        this.$store.getters.privateKeyArmored,
+                        this.form.signingPassphrase
+                    )
+                        .then(publishSignature)
+                        .then(dhtResponse => dhtResponse.key)
+                        .then(signatureKey =>
+                            createPost(this.form.postContent, signatureKey)
+                                .then(() => {
+                                    this.displayConfirmation();
+                                })
+                                .catch(() => this.displayError())
+                        )
+                        .catch(() => {
+                            this.unverifiedPost();
                         });
-                });
-            this.$emit("closeModal");
+                } else {
+                    this.unverifiedPost();
+                }
+                this.$emit("closeModal");
+            } else {
+                this.displayError('Post content is invalid');
+            }
+
         },
         displayConfirmation() {
             this.$swal.fire({
@@ -165,12 +155,37 @@ export default {
                 confirmButtonText: "Ok"
             });
         },
-        displayError() {
+        displayError(message = '') {
             this.$swal.fire({
                 title: "Failed to Create Post",
+                text: message,
                 icon: "error",
                 confirmButtonText: "Ok"
             });
+        },
+        unverifiedPost() {
+            this.$swal
+                .fire({
+                    title: "Confirmation",
+                    text:
+                        "Could not create a post signature. Creating the post without " +
+                        "a signature will prevent others from verifying its integrity.",
+                    icon: "question",
+                    confirmButtonText: "Post Anyway",
+                    showCancelButton: true,
+                    cancelButtonText: "Retry"
+                })
+                .then(result => {
+                    if (result.value) {
+                        createPost(this.form.postContent, null)
+                            .then(() => {
+                                this.displayConfirmation();
+                            })
+                            .catch(() => {
+                                this.displayError();
+                            });
+                    }
+                });
         }
     },
     data() {

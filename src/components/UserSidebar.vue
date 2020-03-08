@@ -1,6 +1,8 @@
 <template>
     <b-card class="isys-card" :img-src="currentUser.profileImageUrl">
-        <b-card-title>{{ currentUser.username }}</b-card-title>
+        <b-card-title>
+            <a v-bind:href="`/profile/${currentUser.username}`">{{ currentUser.username }}</a>
+        </b-card-title>
         <b-card-sub-title class="text-muted"
             >Account Created
             {{

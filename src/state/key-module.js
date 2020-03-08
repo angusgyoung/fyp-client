@@ -39,9 +39,8 @@ export default {
                 commit("set_keypair", JSON.parse(keypairString));
             }
         },
-        // just removes the current keypair from state, not
-        // local storage
-        removeKeypair({commit}) {
+        removeKeypair({commit}, currentUser) {
+            localStorage.removeItem(currentUser.user.id);
             commit("remove_keypair");
         },
         revokeKeypair({commit}, currentUser) {
@@ -62,7 +61,13 @@ export default {
                 });
 
             }));
-
+        },
+        importKeypair({commit}, {user, keypair}) {
+            return new Promise((resolve) => {
+                localStorage.setItem(user.id, JSON.stringify(keypair));
+                commit("set_keypair", keypair);
+                resolve();
+            })
         }
     },
     getters: {

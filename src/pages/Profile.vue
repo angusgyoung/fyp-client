@@ -1,13 +1,13 @@
 <template>
     <b-container class="my-3">
         <b-row class="my-3">
-            <b-col class="col-md-6 mb-3">
-                <UserOverview :user="user" class="h-100" />
+            <b-col class="col-md-4 mb-3">
+                <UserOverview :user="user" class="h-100"/>
             </b-col>
-            <b-col class="col-md-6 mb-3">
-                <b-card class="code-format-card">
+            <b-col class="col-md-8 mb-3">
+                <b-card class="code-format-card h-100">
                     <b-card-title>Public Key</b-card-title>
-                    <b-card-body class="key-preview">{{ this.publicKey }}</b-card-body>
+                    <b-card-body class="key-preview">{{this.publicKey}}</b-card-body>
                 </b-card>
             </b-col>
         </b-row>
@@ -43,7 +43,7 @@ export default {
                 getPublicKeyForEmail(this.user.username)
                     .then(res => (this.publicKey = res.publicKeyArmored))
                     .catch(err => {
-                        this.publicKey = `Error:  ${err.message}`;
+                        this.publicKey = 'Failed to retrieve public key...are you sure the keyserver knows about it?';
                         console.log(err);
                     });
             })
@@ -62,8 +62,8 @@ export default {
 
 <style scoped>
 .key-preview {
-    max-height: 450px;
-    overflow: scroll;
+    max-height: 350px;
+    overflow: auto;
     overflow-x: hidden;
 }
 </style>

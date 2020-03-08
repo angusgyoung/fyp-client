@@ -8,13 +8,13 @@
             <b-collapse id="nav-collapse" is-nav>
                 <b-navbar-nav>
                     <b-nav-item @click="$router.push('/home')">Home</b-nav-item>
-                    <b-nav-item @click="$router.push('/Feed')">Feed</b-nav-item>
+                    <b-nav-item @click="$router.push('/feed')">Feed</b-nav-item>
                 </b-navbar-nav>
 
                 <b-navbar-nav class="ml-auto">
                     <div v-if="isLoggedIn">
                         <b-nav-item-dropdown right>
-                            <template v-slot:button-content>{{ currentUser.username }}</template>
+                            <template v-slot:button-content>{{currentUser.username}}</template>
                             <b-dropdown-item
                                 @click="$router.push(`/profile/${currentUser.username}`)"
                             >Profile</b-dropdown-item>

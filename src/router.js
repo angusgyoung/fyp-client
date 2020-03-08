@@ -35,7 +35,7 @@ const routes = [
     },
     {
         path: "/profile/:username",
-        name: "Profile",
+        name: "profile",
         component: Profile
     }
 ];
