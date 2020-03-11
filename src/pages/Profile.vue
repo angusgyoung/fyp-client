@@ -42,9 +42,8 @@ export default {
                 this.userPostSubscription = `/queue/${this.user.username}/posts`;
                 getPublicKeyForEmail(this.user.username)
                     .then(res => (this.publicKey = res.publicKeyArmored))
-                    .catch(err => {
+                    .catch(() => {
                         this.publicKey = 'Failed to retrieve public key...are you sure the keyserver knows about it?';
-                        console.log(err);
                     });
             })
             .catch(() => {
@@ -56,6 +55,9 @@ export default {
                 });
                 this.$router.go(-1);
             });
+    },
+    created() {
+        document.title = 'Profile - ' + this.$route.params.username;
     }
 };
 </script>

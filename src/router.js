@@ -13,15 +13,15 @@ import VueRouter from "vue-router";
 Vue.use(VueRouter);
 
 const routes = [
-    { path: "/", name: "home", component: Home },
-    { path: "/home", name: "home", component: Home },
-    { path: "/login", name: "login", component: Login },
-    { path: "/register", name: "register", component: Register },
+    {path: "/", name: "home", component: Home, meta: { title: 'Home'}},
+    {path: "/login", name: "login", component: Login, meta: { title: 'Login'}},
+    {path: "/register", name: "register", component: Register, meta: { title: 'Register'}},
     {
         path: "/feed",
         name: "feed",
         component: Feed,
         meta: {
+            title: "Feed",
             requiresAuth: true
         }
     },
@@ -30,13 +30,17 @@ const routes = [
         name: "keys",
         component: Keys,
         meta: {
+            title: 'Keys',
             requiresAuth: true
         }
     },
     {
         path: "/profile/:username",
         name: "profile",
-        component: Profile
+        component: Profile,
+        meta: {
+            requiredAuth: true
+        }
     }
 ];
 
@@ -46,6 +50,7 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
+    document.title = to.meta.title || 'I Said You Said';
     if (to.matched.some(record => record.meta.requiresAuth)) {
         if (store.getters.isLoggedIn) {
             next();

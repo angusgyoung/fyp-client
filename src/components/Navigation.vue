@@ -7,7 +7,7 @@
 
             <b-collapse id="nav-collapse" is-nav>
                 <b-navbar-nav>
-                    <b-nav-item @click="$router.push('/home')">Home</b-nav-item>
+                    <b-nav-item @click="$router.push('/')">Home</b-nav-item>
                     <b-nav-item @click="$router.push('/feed')">Feed</b-nav-item>
                 </b-navbar-nav>
 

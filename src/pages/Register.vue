@@ -12,6 +12,7 @@
                             id="input-1"
                             v-model="form.username"
                             type="email"
+                            autocomplete="username"
                             required
                             placeholder="Enter email"
                         ></b-form-input>
@@ -26,6 +27,7 @@
                             id="input-2"
                             name="password"
                             ref="password"
+                            autocomplete="new-password"
                             required
                             v-model="form.password"
                             type="password"
@@ -71,7 +73,6 @@ export default {
                 .dispatch("register", this.form)
                 .then(() => this.$router.push("/"))
                 .catch(err => {
-                    console.log(err);
                     if (err.response && err.response.status === 400) {
                         this.$swal.fire({
                             title: 'Failed to register new user',

@@ -36,7 +36,6 @@ export default {
         return {
             posts: [],
             page: 0,
-            socket: null,
             stompClient: null
         };
     },
@@ -59,8 +58,7 @@ export default {
         ...mapGetters(["token"])
     },
     mounted() {
-        this.socket = new SockJS(`${WEBSOCKET_URL}?token=${this.token}`);
-        this.stompClient = Stomp.over(this.socket);
+        this.stompClient = Stomp.over(() => new SockJS(`${WEBSOCKET_URL}?token=${this.token}`));
         this.stompClient.debug = () => {};
 
         this.stompClient.connect({}, () => {
@@ -71,7 +69,6 @@ export default {
     },
     beforeRouteLeave() {
         this.stompClient.disconnect();
-        this.socket.close();
     }
 };
 </script>

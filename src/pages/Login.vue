@@ -12,6 +12,7 @@
                             id="input-1"
                             v-model="form.username"
                             type="email"
+                            autocomplete="username"
                             required
                             placeholder="Enter email"
                         ></b-form-input>
@@ -25,6 +26,7 @@
                             id="input-2"
                             v-model="form.password"
                             type="password"
+                            autocomplete="current-password"
                             required
                             placeholder="Enter password"
                         ></b-form-input>

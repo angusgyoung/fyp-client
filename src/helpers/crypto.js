@@ -54,7 +54,7 @@ const verifyClearText = async (message, signature, publicKey) => {
                 return openpgp.verify(options);
             }).then(result => {
                 let {valid} = result.signatures[0];
-                if (valid != null) resolve(valid);
+                if (valid != null) resolve(result);
                 else reject(new Error('Content could not be verified'));
             }).catch(err => {
                 return reject(err);

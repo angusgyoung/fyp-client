@@ -79,24 +79,24 @@
         },
         mounted() {
             if (this.post.signatureKey) {
-
                 getSingature(this.post.signatureKey).then(res => {
                     this.postSignature = res.data.value;
 
                     getPublicKeyForEmail(this.post.username)
                         .then(publicKey => {
                             verifyClearText(this.post.content, this.postSignature, publicKey)
-                                .then(valid => {
+                                .then(result => {
+                                    let {valid} = result.signatures[0];
+
                                     if (valid) {
-                                        this.verificationStateMessage = "Verified";
+                                        this.verificationStateMessage = `Signed at ${result.signatures[0].signature.packets[0].created}`;
                                         this.verificationState = "success";
                                     } else {
-                                        this.verificationStateMessage = "Unverified";
+                                        this.verificationStateMessage = "Signature Verification Failed";
                                         this.verificationState = "failed";
                                     }
                                 }).catch(err => {
-                                console.error(err);
-                                this.verificationStateMessage = `Verification Failed: ${err.message}`;
+                                this.verificationStateMessage = `Signature Verification Failed: ${err.message}`;
                                 this.verificationState = "failed";
                             });
                         }).catch(err => {
@@ -112,8 +112,7 @@
 
             } else {
                 // Post has no signature key, so don't try and verify it
-                this.post.signatureKey = "No signature was provided";
-                this.verificationStateMessage = "";
+                this.verificationStateMessage = "The service did not return a signature key";
                 this.verificationState = "failed";
                 this.postSignature = null;
             }

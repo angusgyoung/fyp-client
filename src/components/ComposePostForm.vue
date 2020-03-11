@@ -27,6 +27,7 @@
             >
                 <b-form-input
                         id="signing-passphrase-input"
+                        autocomplete="private-key-passphrase"
                         type="password"
                         v-model="form.signingPassphrase"
                         trim
@@ -122,8 +123,7 @@
                         this.form.signingPassphrase
                     )
                         .then(signature => (this.signature = signature))
-                        .catch(err => {
-                            console.log(err);
+                        .catch(() => {
                             this.signature = "Failed to generate signature";
                         });
                 } else this.signature = "";
