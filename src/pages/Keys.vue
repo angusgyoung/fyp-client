@@ -1,7 +1,7 @@
 <template>
     <b-container id="key-output-container" class="my-3">
         <b-row>
-            <b-col class="col-sm-10 col-lg my-1">
+            <b-col class="col-12 col-md-6 my-1">
                 <b-card class="isys-card mb-3 h-100">
                     <div v-if="hasKeys">
                         <b-card-body class="text-left">
@@ -52,7 +52,7 @@
                     </div>
                 </b-card>
             </b-col>
-            <b-col class="col-sm-10 col-lg my-1">
+            <b-col class="col-12 col-md-6 my-1">
                 <b-card class="isys-card h-100">
                     <b-card class="code-format-card mb-4">
                         <b-card-title>Public Key</b-card-title>
@@ -141,10 +141,10 @@
                 return this.hasKeypair;
             },
             passphraseState() {
-                return this.privateKeyPassphrase.length > 6;
+                return this.privateKeyPassphrase.length >= 6;
             },
             passphraseInvalidFeedback() {
-                if (this.privateKeyPassphrase.length > 6) {
+                if (this.privateKeyPassphrase.length >= 6) {
                     return "";
                 } else if (this.privateKeyPassphrase.length > 0) {
                     return "Passphrase must be at least 6 characters";

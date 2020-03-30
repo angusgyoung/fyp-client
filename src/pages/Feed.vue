@@ -1,10 +1,10 @@
 <template>
     <b-container class="my-3">
         <b-row>
-            <b-col id="user-sidebar-col" class="col-md-3 my-2">
+            <b-col id="user-sidebar-col" class="col-md-3 mb-2">
                 <UserSidebar />
             </b-col>
-            <b-col class="col-md">
+            <b-col class="col-md-9">
                 <PostList :subscription="'/topic/posts'"/>
             </b-col>
         </b-row>

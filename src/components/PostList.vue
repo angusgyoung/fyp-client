@@ -4,9 +4,9 @@
             <PostContainer v-bind:post="post" />
         </div>
         <infinite-loading @infinite="handleNextPageLoad">
-            <div slot="no-more">No more posts</div>
-            <div slot="no-results">There's nothing here</div>
-            <div slot="error">Something went wrong</div>
+            <div class="post-list-append" slot="no-more">No more posts</div>
+            <div class="post-list-append" slot="no-results">There's nothing here</div>
+            <div class="post-list-append" slot="error">Something went wrong</div>
         </infinite-loading>
     </div>
 </template>
@@ -72,3 +72,9 @@ export default {
     }
 };
 </script>
+
+<style scoped>
+.post-list-append {
+    margin-bottom: 4vh;
+}
+</style>

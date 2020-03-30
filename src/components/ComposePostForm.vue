@@ -83,7 +83,7 @@
                 return this.form.postContent.length >= 1;
             },
             signingPassphraseState() {
-                return this.form.signingPassphrase.length >= 4;
+                return this.form.signingPassphrase.length >= 6;
             },
             postContentInvalid() {
                 if (this.form.postContent.length > 1) {
@@ -95,10 +95,10 @@
                 }
             },
             signingPassphraseInvalid() {
-                if (this.form.signingPassphrase.length > 4) {
+                if (this.form.signingPassphrase.length >= 6) {
                     return "";
                 } else if (this.form.signingPassphrase.length > 0) {
-                    return "Enter at least 4 characters";
+                    return "Enter at least 6 characters";
                 } else {
                     return "If you do not provide a passphrase to decrypt your keys, the post will not be verifiable";
                 }

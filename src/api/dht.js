@@ -4,8 +4,8 @@ const DHT_URL = process.env.VUE_APP_DHT_NODE_URL || "http://localhost:3000";
 
 const publishSignature = postSignature => {
     return new Promise((resolve, reject) => {
-        axios(`${DHT_URL}/insert`, {
-            method: "PUT",
+        axios(`${DHT_URL}`, {
+            method: "POST",
             data: {
                 data: postSignature
             }
@@ -16,7 +16,7 @@ const publishSignature = postSignature => {
 
 const getSingature = key => {
     return new Promise((resolve, reject) => {
-        axios(`${DHT_URL}/lookup/${key}`, {
+        axios(`${DHT_URL}/${key}`, {
             method: "GET"
         }).then(res => resolve(res.data))
             .catch(err => reject(err));

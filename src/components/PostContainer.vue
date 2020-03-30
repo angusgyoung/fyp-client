@@ -80,7 +80,7 @@
         mounted() {
             if (this.post.signatureKey) {
                 getSingature(this.post.signatureKey).then(res => {
-                    this.postSignature = res.data.value;
+                    this.postSignature = res.data;
 
                     getPublicKeyForEmail(this.post.username)
                         .then(publicKey => {
@@ -89,7 +89,7 @@
                                     let {valid} = result.signatures[0];
 
                                     if (valid) {
-                                        this.verificationStateMessage = `Signed at ${result.signatures[0].signature.packets[0].created}`;
+                                        this.verificationStateMessage = `Signed ${result.signatures[0].signature.packets[0].created}`;
                                         this.verificationState = "success";
                                     } else {
                                         this.verificationStateMessage = "Signature Verification Failed";
