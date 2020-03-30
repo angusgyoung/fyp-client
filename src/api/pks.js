@@ -2,9 +2,14 @@ import axios from "axios"
 
 const PKS_URL = process.env.VUE_APP_PKS_URL  || "http://localhost:8888/api/v1/key";
 
+const pksApi = axios.create({
+    withCredentials:false,
+    baseURL: PKS_URL
+});
+
 const getPublicKeyForEmail = (email) => {
         return new Promise((resolve, reject) => {
-            axios(`${PKS_URL}`, {
+            pksApi({
                 method: "GET",
                 params: {
                     email
@@ -19,7 +24,7 @@ const getPublicKeyForEmail = (email) => {
 
 const publishPublicKey = (email, key) => {
     return new Promise((resolve, reject) => {
-        axios(`${PKS_URL}`, {
+        pksApi({
             method: "POST",
             headers: {
                 "Accept": "application/json",
@@ -36,7 +41,7 @@ const publishPublicKey = (email, key) => {
 
 const revokePublicKey = (email) =>  {
     return new Promise((resolve, reject) => {
-        axios(`${PKS_URL}`, {
+        pksApi({
             method: "DELETE",
             params: {
                 email

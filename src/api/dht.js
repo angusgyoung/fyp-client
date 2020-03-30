@@ -2,9 +2,14 @@ import axios from "axios";
 
 const DHT_URL = process.env.VUE_APP_DHT_NODE_URL || "http://localhost:3000";
 
+const dhtApi = axios.create({
+    withCredentials:false,
+    baseURL: DHT_URL
+});
+
 const publishSignature = postSignature => {
     return new Promise((resolve, reject) => {
-        axios(`${DHT_URL}`, {
+        dhtApi({
             method: "POST",
             data: {
                 data: postSignature
@@ -16,8 +21,8 @@ const publishSignature = postSignature => {
 
 const getSingature = key => {
     return new Promise((resolve, reject) => {
-        axios(`${DHT_URL}/${key}`, {
-            method: "GET"
+        dhtApi(`/${key}`, {
+            method: "GET",
         }).then(res => resolve(res.data))
             .catch(err => reject(err));
     });
